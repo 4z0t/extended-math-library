@@ -13,10 +13,139 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Исходные файлы\legacy">
+      <UniqueIdentifier>{e55909c3-4155-4511-9ee6-b77a4d7bfd42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="extended math library.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="IntBase.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="DecInt.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="legacy\BitFrac.cpp">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="legacy\Frac.cpp">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="legacy\Fraction.cpp">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="legacy\Matrix.cpp">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="legacy\Quaternion.cpp">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="legacy\Ring.cpp">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="legacy\Timer.cpp">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="legacy\Ubit.cpp">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="legacy\Ufloat.cpp">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="legacy\UnlimitedCalculations.cpp">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="legacy\Unlint.cpp">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="legacy\Unlintold.cpp">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="legacy\Unreal.cpp">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="legacy\Vector3.cpp">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IntBase.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="DecInt.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\Vector3.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\BitFrac.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\Frac.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\Fraction.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\ioUnlimits.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\Matrix.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\Quaternion.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\Ring.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\Ringstash.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\Timer.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\Ubit.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\Ufloat.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\Unlconsts.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\Unlint.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="legacy\Unreal.h">
+      <Filter>Исходные файлы\legacy</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="legacy\ln2.10000">
+      <Filter>Исходные файлы\legacy</Filter>
+    </None>
+    <None Include="legacy\ln10.2000">
+      <Filter>Исходные файлы\legacy</Filter>
+    </None>
+    <None Include="legacy\ln10.10000">
+      <Filter>Исходные файлы\legacy</Filter>
+    </None>
+    <None Include="legacy\log2(e).10000">
+      <Filter>Исходные файлы\legacy</Filter>
+    </None>
+    <None Include="legacy\log10(e).10000">
+      <Filter>Исходные файлы\legacy</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="legacy\sqrt2.txt">
+      <Filter>Исходные файлы\legacy</Filter>
+    </Text>
+    <Text Include="legacy\sqrt3.txt">
+      <Filter>Исходные файлы\legacy</Filter>
+    </Text>
   </ItemGroup>
 </Project>
