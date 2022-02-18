@@ -20,6 +20,9 @@ protected:
 	T movecells(const uint32_t& shift)const;
 	T& movethiscells(const uint32_t& shift);
 
+	T cut(const uint32_t& length)const;
+	T& cutthis(const uint32_t& length);
+
 public:
 	IntBase();
 	IntBase(const uint32_t& capacity, bool sign);
@@ -34,9 +37,9 @@ public:
 
 
 template<typename T>
-inline void IntBase<T>::extend(const uint32_t& cap)
+void IntBase<T>::extend(const uint32_t& cap)
 {
-#ifdef DEBUG
+#ifdef _DEBUG
 	if (cap <= this->capacity)throw std::invalid_argument("New capacity cant be less than current one");
 #endif // DEBUG
 	uint32_t* new_num = new uint32_t[cap]{};
@@ -60,7 +63,7 @@ T& IntBase<T>::cut_zeros()
 }
 
 template<typename T>
-inline T IntBase<T>::movecells(const uint32_t& shift) const
+T IntBase<T>::movecells(const uint32_t& shift) const
 {
 	if (shift)
 	{
@@ -73,7 +76,7 @@ inline T IntBase<T>::movecells(const uint32_t& shift) const
 }
 
 template<typename T>
-inline T& IntBase<T>::movethiscells(const uint32_t& shift)
+T& IntBase<T>::movethiscells(const uint32_t& shift)
 {
 	if (shift)
 	{
@@ -100,7 +103,43 @@ inline T& IntBase<T>::movethiscells(const uint32_t& shift)
 }
 
 template<typename T>
-inline IntBase<T>::IntBase()
+T IntBase<T>::cut(const uint32_t& length) const
+{
+	if (this->len > length)
+	{
+		T new_unlint(this->len - length, this->sign);
+		for (uint32_t i = 0; i < new_unlint.len; i++)
+		{
+			new_unlint.num[i] = this->num[i + length];
+		}
+		return new_unlint;
+	}
+	return T();
+}
+
+template<typename T>
+T& IntBase<T>::cutthis(const uint32_t& length)
+{
+	if (this->len > length)
+	{
+		uint32_t* new_num = new uint32_t[this->len -= length]{};
+		for (uint32_t i = 0; i < this->len; i++)
+		{
+			new_num[i] = this->num[i + length];
+		}
+		delete[] this->num;
+		this->num = new_num;
+		this->capacity = this->len;
+		return *(T*)this;
+	}
+	delete[] this->num;
+	this->num = new uint32_t[this->len = 1]{};
+	this->capacity = 1;
+	return *(T*)this;
+}
+
+template<typename T>
+IntBase<T>::IntBase()
 {
 	this->sign = false;
 	this->len = 1;
@@ -109,7 +148,7 @@ inline IntBase<T>::IntBase()
 }
 
 template<typename T>
-inline IntBase<T>::IntBase(const uint32_t& capacity, bool sign)
+IntBase<T>::IntBase(const uint32_t& capacity, bool sign)
 {
 	this->sign = sign;
 	this->len = capacity;
@@ -125,7 +164,7 @@ IntBase<T>::IntBase(const IntBase& other): IntBase(other.len, other.sign)
 }
 
 template<typename T>
-inline IntBase<T>::~IntBase()
+IntBase<T>::~IntBase()
 {
 	if (num)delete[]num;
 }

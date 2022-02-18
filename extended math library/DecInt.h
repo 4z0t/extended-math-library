@@ -11,8 +11,10 @@ public:
 	static int dec_int_length(const uint32_t& num);
 
 	DecInt() : IntBase() {}
-	DecInt(const uint32_t& capacity, bool sign) :IntBase(capacity, sign) {}
+	DecInt(const uint32_t& capacity, bool sign) : IntBase(capacity, sign) {}
 	DecInt(const DecInt& other) : IntBase(other) {}
+
+
 #ifdef _IOSTREAM_
 	void print(bool sep)const;
 	friend std::ostream& operator<<(std::ostream& os, const DecInt& value);
