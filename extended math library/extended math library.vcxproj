@@ -233,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DecInt.h" />
+    <ClInclude Include="EMLIO.h" />
     <ClInclude Include="IntBase.h" />
     <ClInclude Include="legacy\BitFrac.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

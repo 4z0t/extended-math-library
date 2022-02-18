@@ -122,6 +122,9 @@
     <ClInclude Include="legacy\Unreal.h">
       <Filter>Исходные файлы\legacy</Filter>
     </ClInclude>
+    <ClInclude Include="EMLIO.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="legacy\ln2.10000">
