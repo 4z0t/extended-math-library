@@ -7,7 +7,12 @@
 template <typename T>
 class IntBase
 {
-protected: 
+public:
+	static constexpr int GREATER = 1;
+	static constexpr int EQUAL = 0;
+	static constexpr int LESS = -1;
+
+protected:
 	uint32_t* num = nullptr;
 	uint32_t capacity = 0;
 	uint32_t len = 0;
@@ -22,6 +27,8 @@ protected:
 
 	T cut(const uint32_t& length)const;
 	T& cutthis(const uint32_t& length);
+
+	int abs_compare(const IntBase& other);
 
 public:
 	IntBase();
@@ -57,7 +64,7 @@ T& IntBase<T>::cut_zeros()
 			if (this->num[i] != 0 || i == 0)
 			{
 				this->len = i + 1;
-				return *this;
+				break;
 			}
 	return *(T*)this;
 }
@@ -139,6 +146,22 @@ T& IntBase<T>::cutthis(const uint32_t& length)
 }
 
 template<typename T>
+int IntBase<T>::abs_compare(const IntBase& other)
+{
+	if (this->len > other.len)
+		return GREATER;
+	if (this->len < other.len)
+		return LESS;
+	for (uint32_t i = this->len - 1; ; i--)
+	{
+		if (this->num[i] != other.num[i])
+			return  (this->num[i] > other.num[i]) ? GREATER : LESS;
+		if (i == 0)
+			return EQUAL;
+	}
+}
+
+template<typename T>
 IntBase<T>::IntBase()
 {
 	this->sign = false;
@@ -157,7 +180,7 @@ IntBase<T>::IntBase(const uint32_t& capacity, bool sign)
 }
 
 template<typename T>
-IntBase<T>::IntBase(const IntBase& other): IntBase(other.len, other.sign)
+IntBase<T>::IntBase(const IntBase& other) : IntBase(other.len, other.sign)
 {
 	for (uint32_t i = 0; i < this->len; i++)
 		this->num[i] = other.num[i];
