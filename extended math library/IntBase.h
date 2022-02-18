@@ -28,17 +28,69 @@ protected:
 	T cut(const uint32_t& length)const;
 	T& cutthis(const uint32_t& length);
 
-	int abs_compare(const IntBase& other);
+	int abs_compare(const IntBase& other)const;
 
 public:
+
+
+
+
+	bool operator==(const IntBase& other)const;
+	bool operator!=(const IntBase& other)const;
+	bool operator>(const IntBase& other)const;
+	bool operator>=(const IntBase& other)const;
+	bool operator<(const IntBase& other)const;
+	bool operator<=(const IntBase& other)const;
+
 	IntBase();
 	IntBase(const uint32_t& capacity, bool sign);
 	IntBase(const IntBase& other);
+
+
+
 	~IntBase();
 };
 
 
+template<typename T>
+bool IntBase<T>:: operator==(const IntBase& other)const
+{
+	return  (this->sign == other.sign) && (EQUAL == this->abs_compare(other));
+}
 
+template<typename T>
+bool IntBase<T>::operator!=(const IntBase& other)const
+{
+	return !(*this == other);
+}
+
+template<typename T>
+bool IntBase<T>::operator>(const IntBase& other)const
+{
+	if (!this->sign && other.sign)
+		return true;
+	if (this->sign && !other.sign)
+		return false;
+	return (!(this->sign && other.sign)) == (this->abs_compare(other) == GREATER);
+}
+
+template<typename T>
+bool IntBase<T>::operator>=(const IntBase& other)const
+{
+	return (*this == other) || (*this > other);
+}
+
+template<typename T>
+bool IntBase<T>:: operator<(const IntBase& other)const
+{
+	return !(*this >= other);
+}
+
+template<typename T>
+bool IntBase<T>::operator<=(const IntBase& other)const
+{
+	return !(*this > other);
+}
 
 
 
@@ -146,7 +198,7 @@ T& IntBase<T>::cutthis(const uint32_t& length)
 }
 
 template<typename T>
-int IntBase<T>::abs_compare(const IntBase& other)
+int IntBase<T>::abs_compare(const IntBase& other)const
 {
 	if (this->len > other.len)
 		return GREATER;
