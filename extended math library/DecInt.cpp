@@ -12,11 +12,16 @@ int DecInt::dec_int_length(const uint32_t& num)
 	return length;
 }
 
-DecInt::DecInt(const DecInt& other) :DecInt(other.capacity, other.sign)
+
+#ifdef _INITIALIZER_LIST_
+DecInt::DecInt(std::initializer_list<uint32_t> num, bool negative)
 {
-	this->len = other.len;
-	for (uint32_t i = 0; i < this->len; i++)
-		this->num[i] = other.num[i];
+	if (this->num)delete[]this->num;
+	this->sign = negative;
+	this->capacity = this->len;
+	uint32_t  j = (this->len = num.size());
+	this->num = new uint32_t[this->len]{};
+	for (uint32_t i : num)
+		this->num[--j] = i;
 }
-
-
+#endif

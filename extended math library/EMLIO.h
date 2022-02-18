@@ -29,6 +29,8 @@ void DecInt::print(bool sep = false) const
 	std::cout << std::endl;
 }
 
+
+
 std::ostream& operator<<(std::ostream& os, const DecInt& value)
 {
 	bool zeros = true;

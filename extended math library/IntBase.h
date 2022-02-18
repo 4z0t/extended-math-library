@@ -7,9 +7,7 @@
 template <typename T>
 class IntBase
 {
-protected:
-
-
+protected: 
 	uint32_t* num = nullptr;
 	uint32_t capacity = 0;
 	uint32_t len = 0;
@@ -23,16 +21,17 @@ protected:
 	T& movethiscells(const uint32_t& shift);
 
 public:
-
-
-
 	IntBase();
 	IntBase(const uint32_t& capacity, bool sign);
-	//IntBase(const IntBase& other) = delete;
-
-
+	IntBase(const IntBase& other);
 	~IntBase();
 };
+
+
+
+
+
+
 
 template<typename T>
 inline void IntBase<T>::extend(const uint32_t& cap)
@@ -47,7 +46,6 @@ inline void IntBase<T>::extend(const uint32_t& cap)
 	this->capacity = cap;
 	this->num = new_num;
 }
-
 template<typename T>
 T& IntBase<T>::cut_zeros()
 {
@@ -117,6 +115,13 @@ inline IntBase<T>::IntBase(const uint32_t& capacity, bool sign)
 	this->len = capacity;
 	this->capacity = capacity;
 	this->num = new uint32_t[this->capacity]{};
+}
+
+template<typename T>
+IntBase<T>::IntBase(const IntBase& other): IntBase(other.len, other.sign)
+{
+	for (uint32_t i = 0; i < this->len; i++)
+		this->num[i] = other.num[i];
 }
 
 template<typename T>
