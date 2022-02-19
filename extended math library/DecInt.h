@@ -6,6 +6,9 @@
 class DecInt :
 	public IntBase<DecInt>
 {
+	int64_t distance()const override;
+	int64_t distance(const DecInt& other)const override;
+
 public:
 	static const uint32_t milrd = 1'000'000'000;
 	static int dec_int_length(const uint32_t& num);

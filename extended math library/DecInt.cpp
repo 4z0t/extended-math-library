@@ -1,5 +1,15 @@
 #include "DecInt.h"
 
+inline int64_t DecInt::distance() const
+{
+	return ((int64_t)this->len - 1) * 9 + DecInt::dec_int_length(this->num[this->len - 1]);
+}
+
+inline int64_t DecInt::distance(const DecInt& other) const
+{
+	return ((int64_t)this->len - other.len) * 9 + DecInt::dec_int_length(this->num[this->len - 1]) - DecInt::dec_int_length(other.num[other.len - 1]);
+}
+
 int DecInt::dec_int_length(const uint32_t& num)
 {
 	uint32_t a = num;
