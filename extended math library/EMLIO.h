@@ -15,7 +15,7 @@ void DecInt::print(bool sep = false) const
 		std::cout << '-';
 	for (uint32_t i = this->len - 1; ; i--)
 	{
-		for (int j = 0; j < 9 - dec_int_length(this->num[i]) && !zeros; j++)
+		for (int j = 0; j < 9 - DecInt::dec_int_length(this->num[i]) && !zeros; j++)
 			std::cout << 0;
 		if (this->num[i] != 0 || (i == 0 && zeros))
 		{

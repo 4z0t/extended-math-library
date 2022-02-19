@@ -23,10 +23,11 @@ void compare_test()
 	std::cout << (a >= b) << std::endl;
 	std::cout << (a <= b) << std::endl;
 	std::cout << (a > b) << std::endl;
-	std::cout << (a < b) << std::endl;
-
-	
+	std::cout << (a < b) << std::endl;	
 }
+
+
+
 int main()
 {
 	//io_example();

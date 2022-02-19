@@ -8,6 +8,7 @@ template <typename T>
 class IntBase
 {
 public:
+
 	static constexpr int GREATER = 1;
 	static constexpr int EQUAL = 0;
 	static constexpr int LESS = -1;
@@ -31,10 +32,6 @@ protected:
 	int abs_compare(const IntBase& other)const;
 
 public:
-
-
-
-
 	bool operator==(const IntBase& other)const;
 	bool operator!=(const IntBase& other)const;
 	bool operator>(const IntBase& other)const;
