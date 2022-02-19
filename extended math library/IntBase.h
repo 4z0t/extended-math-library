@@ -21,6 +21,10 @@ protected:
 
 
 	void extend(const uint32_t& cap);
+	bool zero()const;
+
+	T& normalize();
+
 	T& cut_zeros();
 
 	T movecells(const uint32_t& shift)const;
@@ -106,6 +110,18 @@ void IntBase<T>::extend(const uint32_t& cap)
 	delete[] this->num;
 	this->capacity = cap;
 	this->num = new_num;
+}
+template<typename T>
+bool IntBase<T>::zero() const
+{
+	return this->num[this->len - 1] == 0;
+}
+template<typename T>
+inline T& IntBase<T>::normalize()
+{
+	this->cut_zeros();
+	if (this->zero())this->sign = false;
+	return *(T)this;
 }
 template<typename T>
 T& IntBase<T>::cut_zeros()
