@@ -8,13 +8,12 @@ class DecInt :
 {
 	int64_t distance()const override;
 	int64_t distance(const DecInt& other)const override;
-
+	DecInt(const uint32_t& capacity, bool sign) : IntBase(capacity, sign) {}
 public:
 	static const uint32_t milrd = 1'000'000'000;
 	static int dec_int_length(const uint32_t& num);
 
 	DecInt() : IntBase() {}
-	DecInt(const uint32_t& capacity, bool sign) : IntBase(capacity, sign) {}
 	DecInt(const DecInt& other) : IntBase(other) {}
 
 

@@ -26,11 +26,16 @@ void compare_test()
 	std::cout << (a < b) << std::endl;	
 }
 
-
+void debug_test()
+{
+	DecInt a{ 0,0,5325235 };
+	a.debug_log();
+}
 
 int main()
 {
 	//io_example();
-	compare_test();
+	//compare_test();
+	debug_test();
 }
 

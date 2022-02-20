@@ -11,18 +11,18 @@
 void DecInt::print(bool sep = false) const
 {
 	bool zeros = true;
-	if (this->sign)
+	if (this->_sign)
 		std::cout << '-';
-	for (uint32_t i = this->len - 1; ; i--)
+	for (uint32_t i = this->_len - 1; ; i--)
 	{
-		for (int j = 0; j < 9 - DecInt::dec_int_length(this->num[i]) && !zeros; j++)
+		for (int j = 0; j < 9 - DecInt::dec_int_length(this->_num[i]) && !zeros; j++)
 			std::cout << 0;
-		if (this->num[i] != 0 || (i == 0 && zeros))
+		if (this->_num[i] != 0 || (i == 0 && zeros))
 		{
-			std::cout << this->num[i];
+			std::cout << this->_num[i];
 		}
 
-		zeros = ((this->num[i] == 0) && zeros);
+		zeros = ((this->_num[i] == 0) && zeros);
 		if (i == 0)break;
 		if (sep)std::cout << '\'';
 	}
@@ -34,15 +34,15 @@ void DecInt::print(bool sep = false) const
 std::ostream& operator<<(std::ostream& os, const DecInt& value)
 {
 	bool zeros = true;
-	if (value.sign)
+	if (value._sign)
 		os << '-';
-	for (uint32_t i = value.len - 1; ; i--)
+	for (uint32_t i = value._len - 1; ; i--)
 	{
-		for (int j = 0; j < 9 - DecInt::dec_int_length(value.num[i]) && !zeros; j++)
+		for (int j = 0; j < 9 - DecInt::dec_int_length(value._num[i]) && !zeros; j++)
 			os << 0;
-		if (value.num[i] != 0 || (i == 0 && zeros))
-			os << value.num[i];
-		zeros = ((value.num[i] == 0) && zeros);
+		if (value._num[i] != 0 || (i == 0 && zeros))
+			os << value._num[i];
+		zeros = ((value._num[i] == 0) && zeros);
 		if (i == 0)break;
 	}
 	return os;

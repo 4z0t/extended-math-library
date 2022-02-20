@@ -2,12 +2,12 @@
 
 inline int64_t DecInt::distance() const
 {
-	return ((int64_t)this->len - 1) * 9 + DecInt::dec_int_length(this->num[this->len - 1]);
+	return ((int64_t)this->_len - 1) * 9 + DecInt::dec_int_length(this->_num[this->_len - 1]);
 }
 
 inline int64_t DecInt::distance(const DecInt& other) const
 {
-	return ((int64_t)this->len - other.len) * 9 + DecInt::dec_int_length(this->num[this->len - 1]) - DecInt::dec_int_length(other.num[other.len - 1]);
+	return ((int64_t)this->_len - other._len) * 9 + DecInt::dec_int_length(this->_num[this->_len - 1]) - DecInt::dec_int_length(other._num[other._len - 1]);
 }
 
 int DecInt::dec_int_length(const uint32_t& num)
@@ -27,18 +27,19 @@ int DecInt::dec_int_length(const uint32_t& num)
 DecInt::DecInt(std::initializer_list<uint32_t> num, bool negative)
 {
 
-	if (this->num)delete[]this->num;
-	this->sign = negative;
-	this->capacity = this->len;
-	uint32_t  j = (this->len = num.size());
-	this->num = new uint32_t[this->len]{};
+	if (this->_num)delete[]this->_num;
+	this->_sign = negative;
+	uint32_t  j = (this->_len = num.size());
+	this->_capacity = this->_len;
+	this->_num = new uint32_t[this->_len]{};
 	for (uint32_t i : num)
 	{
 #ifdef _DEBUG
 		if (i >= milrd)throw std::invalid_argument("Invalid decimal number initialization");
 #endif // _DEBUG
 
-		this->num[--j] = i;
+		this->_num[--j] = i;
 	}
+	this->cut_zeros(); 
 }
 #endif
