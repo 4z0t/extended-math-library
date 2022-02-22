@@ -17,6 +17,33 @@ public:
 	DecInt(const DecInt& other) : IntBase(other) {}
 
 
+
+	DecInt operator*(const DecInt& other)const override;
+	DecInt operator+(const DecInt& other)const override;
+	DecInt operator-(const DecInt& other)const override;
+	DecInt operator/(const DecInt& other)const override;
+	DecInt operator%(const DecInt& other)const override;
+
+	DecInt& operator=(const DecInt& other) override;
+
+	DecInt& operator*=(const DecInt& other) override;
+	DecInt& operator+=(const DecInt& other) override;
+	DecInt& operator-=(const DecInt& other) override;
+	DecInt& operator/=(const DecInt& other) override;
+	DecInt& operator%=(const DecInt& other) override;
+
+	DecInt& operator++()override;
+	DecInt operator++(int)override;
+	DecInt& operator--()override;
+	DecInt operator--(int)override;
+	DecInt operator-()const override;
+
+
+
+
+
+
+
 #ifdef _IOSTREAM_
 	void print(bool sep)const;
 	friend std::ostream& operator<<(std::ostream& os, const DecInt& value);

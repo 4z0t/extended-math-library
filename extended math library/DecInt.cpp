@@ -22,6 +22,86 @@ int DecInt::dec_int_length(const uint32_t& num)
 	return length;
 }
 
+DecInt DecInt::operator*(const DecInt& other) const
+{
+	return DecInt();
+}
+
+DecInt DecInt::operator+(const DecInt& other) const
+{
+	return DecInt();
+}
+
+DecInt DecInt::operator-(const DecInt& other) const
+{
+	return DecInt();
+}
+
+DecInt DecInt::operator/(const DecInt& other) const
+{
+	return DecInt();
+}
+
+DecInt DecInt::operator%(const DecInt& other) const
+{
+	return DecInt();
+}
+
+DecInt& DecInt::operator=(const DecInt& other)
+{
+	return *this;
+}
+
+DecInt& DecInt::operator*=(const DecInt& other)
+{
+	return *this;
+}
+
+DecInt& DecInt::operator+=(const DecInt& other)
+{
+	return *this;
+}
+
+DecInt& DecInt::operator-=(const DecInt& other)
+{
+	return *this;
+}
+
+DecInt& DecInt::operator/=(const DecInt& other)
+{
+	return *this;
+}
+
+DecInt& DecInt::operator%=(const DecInt& other)
+{
+	return *this;
+}
+
+DecInt& DecInt::operator++()
+{
+	return *this;
+}
+
+DecInt DecInt::operator++(int)
+{
+	return DecInt();
+}
+
+DecInt& DecInt::operator--()
+{
+	return *this;
+}
+
+DecInt DecInt::operator--(int)
+{
+	return DecInt();
+}
+
+DecInt DecInt::operator-() const
+{
+	return DecInt();
+}
+
 
 #ifdef _INITIALIZER_LIST_
 DecInt::DecInt(std::initializer_list<uint32_t> num, bool negative)
