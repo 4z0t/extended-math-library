@@ -21,7 +21,6 @@ protected:
 
 
 	void extend(const uint32_t& cap);
-	bool zero()const;
 
 	T& normalize();
 
@@ -45,6 +44,11 @@ public:
 	bool operator>=(const IntBase& other)const;
 	bool operator<(const IntBase& other)const;
 	bool operator<=(const IntBase& other)const;
+
+	bool zero()const;
+
+	explicit operator bool()const;
+
 
 	IntBase();
 	IntBase(const IntBase& other);
@@ -128,6 +132,11 @@ template<typename T>
 bool IntBase<T>::zero() const
 {
 	return this->_num[this->_len - 1] == 0;
+}
+template<typename T>
+inline IntBase<T>::operator bool() const
+{
+	return !this->zero();
 }
 template<typename T>
 inline T& IntBase<T>::normalize()
