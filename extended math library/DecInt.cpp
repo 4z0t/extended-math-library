@@ -60,54 +60,51 @@ DecInt::DecInt(const uint64_t& value)
 DecInt DecInt::abs_sum(const DecInt& other) const
 {
 	std::div_t n;
-
+	int rem = 0;
 	if (this->_len > other._len)
 	{
-		DecInt result(this->_len, this->_sign);
+		DecInt result(this->_len + 1, this->_sign);
 		for (uint32_t i = 0; i < this->_len; i++)
 			if (i < other._len)
 			{
 				if (this->_num[i] + other._num[i] == 0)
 					continue;
-				n = std::div((int32_t) this->_num[i] + other._num[i],(int) milrd);
-
+				n = std::div(rem + this->_num[i] + other._num[i], (int)milrd);
 				result._num[i] += n.rem;
-				result._num[i + 1] += n.quot;
-				result._num[i + 1] += result._num[i] / milrd;
-				result._num[i] %= milrd;
+				rem = n.quot;
 			}
 			else
 			{
 				if (this->_num[i] == 0)
 					continue;
-				n = std::div((int32_t)this->_num[i] + result._num[i], (int)milrd);
+				n = std::div(rem + this->_num[i] + result._num[i], (int)milrd);
 				result._num[i] = n.rem;
-				result._num[i + 1] += n.quot;
-				
+				rem = n.quot;
 			}
+		result._num[this->_len] = rem;
 		return result.cut_zeros();
 	}
 	else
 	{
-		DecInt result(other._len, this->_sign);
+		DecInt result(other._len + 1, this->_sign);
 		for (uint32_t i = 0; i < other._len; i++)
 			if (i < this->_len)
 			{
 				if (this->_num[i] + other._num[i] == 0)
 					continue;
-				result._num[i] += (this->_num[i] + other._num[i]) % milrd;
-				result._num[i + 1] += (this->_num[i] + other._num[i]) / milrd;
-				result._num[i + 1] += result._num[i] / milrd;
-				result._num[i] %= milrd;
+				n = std::div(rem + this->_num[i] + other._num[i], (int)milrd);
+				result._num[i] += n.rem;
+				rem = n.quot;
 			}
 			else
 			{
 				if (other._num[i] == 0)
 					continue;
-				result._num[i] += other._num[i];
-				result._num[i + 1] += result._num[i] / milrd;
-				result._num[i] %= milrd;
+				n = std::div(rem + other._num[i] + result._num[i], (int)milrd);
+				result._num[i] = n.rem;
+				rem = n.quot;
 			}
+		result._num[other._len] = rem;
 		return result.cut_zeros();
 	}
 }
@@ -161,6 +158,7 @@ DecInt DecInt::abs_sub(const DecInt& other) const
 			}
 		return result.cut_zeros();
 	}
+#ifdef _DEBUG
 	else if (compare_result == EQUAL)
 	{
 		return DecInt(0);
@@ -169,6 +167,8 @@ DecInt DecInt::abs_sub(const DecInt& other) const
 	{
 		throw std::logic_error("Unknown compare code");
 	}
+#endif // _DEBUG
+	return DecInt(0);
 }
 
 

@@ -16,14 +16,14 @@ void compare_test()
 {
 	DecInt a{ 2,0,5325235 };
 	a.print(true);
-	DecInt b({ 1,0 },false);
+	DecInt b({ 1,0 }, false);
 	b.print(true);
 
 	std::cout << (a == b) << std::endl;
 	std::cout << (a >= b) << std::endl;
 	std::cout << (a <= b) << std::endl;
 	std::cout << (a > b) << std::endl;
-	std::cout << (a < b) << std::endl;	
+	std::cout << (a < b) << std::endl;
 }
 
 void debug_test()
@@ -35,15 +35,15 @@ void debug_test()
 
 void sum_sub_test()
 {
-	DecInt a = { 213214 ,546547};
+	DecInt a = { 999999999,999132914 ,546547 };
 	a.debug_log();
-	DecInt b = { 213214 ,0 };
+	DecInt b = { 1213214 ,0 };
 	b.debug_log();
-	DecInt c = a - b;
+	DecInt c = b+a;
 	c.debug_log();
-	(a + b).print();
+	/*(a + b).print();
 	(a - b).print();
-	(b -a).print();
+	(b - a).print();*/
 
 }
 //void cut_move_test()
@@ -57,7 +57,7 @@ void sum_sub_test()
 
 int main()
 {
-	
+
 
 	//io_example();
 	//compare_test();
