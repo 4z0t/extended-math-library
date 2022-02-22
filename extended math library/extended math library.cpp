@@ -32,10 +32,20 @@ void debug_test()
 	a.debug_log();
 }
 
+//void cut_move_test()
+//{
+//	DecInt a{ 2,0,5325235 };
+//	DecInt b= a.movecells(5);
+//	DecInt c = a.cut(1);
+//	c.print(true);
+//	b.print(true);
+//}
+
 int main()
 {
 	//io_example();
 	//compare_test();
-	debug_test();
+	//debug_test();
+	//cut_move_test();
 }
 

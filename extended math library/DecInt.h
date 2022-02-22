@@ -26,6 +26,7 @@ public:
 	DecInt(std::initializer_list<uint32_t> num) :DecInt(num, false) {}
 	DecInt(std::initializer_list<uint32_t> num, bool negative);
 #endif
+	friend class IntBase<DecInt>;
 };
 
 #endif

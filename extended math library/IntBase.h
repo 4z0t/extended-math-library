@@ -134,7 +134,7 @@ inline T& IntBase<T>::normalize()
 {
 	this->cut_zeros();
 	if (this->zero())this->_sign = false;
-	return *(T)this;
+	return *(T*)this;
 }
 template<typename T>
 T& IntBase<T>::cut_zeros()
@@ -156,7 +156,7 @@ T IntBase<T>::movecells(const uint32_t& shift) const
 	{
 		T new_int(this->_len + shift, this->_sign);
 		for (uint32_t i = 0; i < this->_len; i++)
-			new_int.num[i + shift] = this->_num[i];
+			new_int._num[i + shift] = this->_num[i];
 		return new_int;
 	}
 	return *(T*)this;
@@ -195,9 +195,9 @@ T IntBase<T>::cut(const uint32_t& length) const
 	if (this->_len > length)
 	{
 		T new_unlint(this->_len - length, this->_sign);
-		for (uint32_t i = 0; i < new_unlint.len; i++)
+		for (uint32_t i = 0; i < new_unlint._len; i++)
 		{
-			new_unlint.num[i] = this->_num[i + length];
+			new_unlint._num[i] = this->_num[i + length];
 		}
 		return new_unlint;
 	}
