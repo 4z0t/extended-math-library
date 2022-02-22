@@ -1,4 +1,6 @@
 #pragma once
+#ifndef BININT_H
+#define BININT_H
 #include "IntBase.h"
 class BinInt :
     public IntBase<BinInt>
@@ -6,3 +8,4 @@ class BinInt :
 
 };
 
+#endif // !BININT_H
