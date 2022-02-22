@@ -38,6 +38,13 @@ protected:
 	virtual int64_t distance(const T&)const = 0;
 	IntBase(const uint32_t& capacity, bool sign);
 public:
+
+
+
+
+
+
+
 	bool operator==(const IntBase& other)const;
 	bool operator!=(const IntBase& other)const;
 	bool operator>(const IntBase& other)const;

@@ -32,6 +32,20 @@ void debug_test()
 	a.debug_log();
 }
 
+
+void sum_sub_test()
+{
+	DecInt a = { 213214 ,546547};
+	a.debug_log();
+	DecInt b = { 213214 ,0 };
+	b.debug_log();
+	DecInt c = a - b;
+	c.debug_log();
+	(a + b).print();
+	(a - b).print();
+	(b -a).print();
+
+}
 //void cut_move_test()
 //{
 //	DecInt a{ 2,0,5325235 };
@@ -43,9 +57,12 @@ void debug_test()
 
 int main()
 {
+	
+
 	//io_example();
 	//compare_test();
 	//debug_test();
 	//cut_move_test();
+	sum_sub_test();
 }
 

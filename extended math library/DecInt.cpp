@@ -10,6 +10,7 @@ inline int64_t DecInt::distance(const DecInt& other) const
 	return ((int64_t)this->_len - other._len) * 9 + DecInt::dec_int_length(this->_num[this->_len - 1]) - DecInt::dec_int_length(other._num[other._len - 1]);
 }
 
+
 int DecInt::dec_int_length(const uint32_t& num)
 {
 	uint32_t a = num;
@@ -21,6 +22,155 @@ int DecInt::dec_int_length(const uint32_t& num)
 	}
 	return length;
 }
+DecInt::DecInt(const int8_t& value)
+{
+}
+DecInt::DecInt(const uint8_t& value)
+{
+}
+DecInt::DecInt(const int16_t& value)
+{
+}
+DecInt::DecInt(const uint16_t& value)
+{
+}
+DecInt::DecInt(const int32_t& value) :DecInt(2, false)
+{
+	this->_sign = (value < 0);
+	if (abs(value) >= milrd)
+	{
+		this->_num[0] = abs(value) % milrd;
+		this->_num[1] = abs(value) / milrd;
+	}
+	else
+	{
+		this->_len = 1;
+		this->_num[0] = abs(value);
+	}
+}
+DecInt::DecInt(const uint32_t& value)
+{
+}
+DecInt::DecInt(const int64_t& value)
+{
+}
+DecInt::DecInt(const uint64_t& value)
+{
+}
+DecInt DecInt::abs_sum(const DecInt& other) const
+{
+	std::div_t n;
+
+	if (this->_len > other._len)
+	{
+		DecInt result(this->_len, this->_sign);
+		for (uint32_t i = 0; i < this->_len; i++)
+			if (i < other._len)
+			{
+				if (this->_num[i] + other._num[i] == 0)
+					continue;
+				n = std::div((int32_t) this->_num[i] + other._num[i],(int) milrd);
+
+				result._num[i] += n.rem;
+				result._num[i + 1] += n.quot;
+				result._num[i + 1] += result._num[i] / milrd;
+				result._num[i] %= milrd;
+			}
+			else
+			{
+				if (this->_num[i] == 0)
+					continue;
+				n = std::div((int32_t)this->_num[i] + result._num[i], (int)milrd);
+				result._num[i] = n.rem;
+				result._num[i + 1] += n.quot;
+				
+			}
+		return result.cut_zeros();
+	}
+	else
+	{
+		DecInt result(other._len, this->_sign);
+		for (uint32_t i = 0; i < other._len; i++)
+			if (i < this->_len)
+			{
+				if (this->_num[i] + other._num[i] == 0)
+					continue;
+				result._num[i] += (this->_num[i] + other._num[i]) % milrd;
+				result._num[i + 1] += (this->_num[i] + other._num[i]) / milrd;
+				result._num[i + 1] += result._num[i] / milrd;
+				result._num[i] %= milrd;
+			}
+			else
+			{
+				if (other._num[i] == 0)
+					continue;
+				result._num[i] += other._num[i];
+				result._num[i + 1] += result._num[i] / milrd;
+				result._num[i] %= milrd;
+			}
+		return result.cut_zeros();
+	}
+}
+
+DecInt DecInt::abs_sub(const DecInt& other) const
+{
+	int compare_result = this->abs_compare(other);
+	if (compare_result == GREATER)
+	{
+		DecInt result(*this);
+		for (uint32_t i = 0; i < other._len; i++)
+			if (result._num[i] >= other._num[i])
+			{
+				result._num[i] -= other._num[i];
+			}
+			else
+			{
+				uint32_t j = i + 1;
+				while (result._num[j] == 0)
+				{
+					result._num[j++] = milrd - 1;
+					if (j == result._len)
+						break;
+				}
+				result._num[j] -= 1;
+				result._num[i] += milrd - other._num[i];
+			}
+
+		return result.cut_zeros();
+	}
+	else if (compare_result == LESS)
+	{
+		DecInt result(other);
+		result._sign = !result._sign;
+		for (uint32_t i = 0; i < this->_len; i++)
+			if (result._num[i] >= this->_num[i])
+			{
+				result._num[i] -= this->_num[i];
+			}
+			else
+			{
+				uint32_t j = i + 1;
+				while (result._num[j] == 0)
+				{
+					result._num[j++] = milrd - 1;
+					if (j == result._len)
+						break;
+				}
+				result._num[j] -= 1;
+				result._num[i] += milrd - this->_num[i];
+			}
+		return result.cut_zeros();
+	}
+	else if (compare_result == EQUAL)
+	{
+		return DecInt(0);
+	}
+	else
+	{
+		throw std::logic_error("Unknown compare code");
+	}
+}
+
 
 DecInt DecInt::operator*(const DecInt& other) const
 {
@@ -29,12 +179,26 @@ DecInt DecInt::operator*(const DecInt& other) const
 
 DecInt DecInt::operator+(const DecInt& other) const
 {
-	return DecInt();
+	if (this->_sign == other._sign)
+	{
+		return this->abs_sum(other);
+	}
+	else
+	{
+		return this->abs_sub(other);
+	}
 }
 
 DecInt DecInt::operator-(const DecInt& other) const
 {
-	return DecInt();
+	if (this->_sign != other._sign)
+	{
+		return this->abs_sum(other);
+	}
+	else
+	{
+		return this->abs_sub(other);
+	}
 }
 
 DecInt DecInt::operator/(const DecInt& other) const
@@ -120,6 +284,6 @@ DecInt::DecInt(std::initializer_list<uint32_t> num, bool negative)
 
 		this->_num[--j] = i;
 	}
-	this->cut_zeros(); 
+	this->cut_zeros();
 }
 #endif

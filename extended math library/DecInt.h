@@ -1,5 +1,6 @@
 #pragma once
 #include "IntBase.h"
+#include <cstdlib>
 #ifndef DECINT_H
 #define DECINT_H
 
@@ -9,6 +10,10 @@ class DecInt :
 	int64_t distance()const override;
 	int64_t distance(const DecInt& other)const override;
 	DecInt(const uint32_t& capacity, bool sign) : IntBase(capacity, sign) {}
+	DecInt abs_sum(const DecInt& other)const;
+
+	DecInt abs_sub(const DecInt& other)const;
+	
 public:
 	static const uint32_t milrd = 1'000'000'000;
 	static int dec_int_length(const uint32_t& num);
@@ -16,6 +21,17 @@ public:
 	DecInt() : IntBase() {}
 	DecInt(const DecInt& other) : IntBase(other) {}
 
+	DecInt(const int8_t& value);
+	DecInt(const uint8_t& value);
+
+	DecInt(const int16_t& value);
+	DecInt(const uint16_t& value);
+
+	DecInt(const int32_t& value);
+	DecInt(const uint32_t& value);
+
+	DecInt(const int64_t& value);
+	DecInt(const uint64_t& value);
 
 
 	DecInt operator*(const DecInt& other)const override;
