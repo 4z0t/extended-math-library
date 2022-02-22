@@ -50,6 +50,28 @@ public:
 	explicit operator bool()const;
 
 
+	virtual T operator*(const T& other)const = 0;
+	virtual T operator+(const T& other)const = 0;
+	virtual T operator-(const T& other)const = 0;
+	virtual T operator/(const T& other)const = 0;
+	virtual T operator%(const T& other)const = 0;
+
+	virtual T& operator=(const T& other) = 0;
+
+	virtual T& operator*=(const T& other) = 0;
+	virtual T& operator+=(const T& other) = 0;
+	virtual T& operator-=(const T& other) = 0;
+	virtual T& operator/=(const T& other) = 0;
+	virtual T& operator%=(const T& other) = 0;
+
+	virtual T& operator++() = 0;
+	virtual T operator++(int) = 0;
+	virtual T& operator--() = 0;
+	virtual T operator--(int) = 0;
+	virtual T operator-()const = 0;
+
+
+
 	IntBase();
 	IntBase(const IntBase& other);
 
