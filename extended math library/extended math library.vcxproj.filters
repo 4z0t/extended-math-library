@@ -69,7 +69,7 @@
     <ClCompile Include="legacy\Unreal.cpp">
       <Filter>Исходные файлы\legacy</Filter>
     </ClCompile>
-    <ClCompile Include="legacy\Vector3.cpp">
+    <ClCompile Include="LineAlg\Vector3.cpp">
       <Filter>Исходные файлы\legacy</Filter>
     </ClCompile>
     <ClCompile Include="BinInt.cpp">
@@ -81,6 +81,12 @@
     <ClCompile Include="tests\BinIntTests.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="LineAlg\Quaternion.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="LineAlg\Matrix.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IntBase.h">
@@ -89,7 +95,7 @@
     <ClInclude Include="DecInt.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="legacy\Vector3.h">
+    <ClInclude Include="LineAlg\Vector3.h">
       <Filter>Исходные файлы\legacy</Filter>
     </ClInclude>
     <ClInclude Include="legacy\BitFrac.h">
@@ -138,6 +144,12 @@
       <Filter>Исходные файлы</Filter>
     </ClInclude>
     <ClInclude Include="BinInt.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="LineAlg\Quaternion.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="LineAlg\Matrix.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

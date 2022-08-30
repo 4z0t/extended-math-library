@@ -154,101 +154,101 @@
 //{
 //}
 
-#include <complex>
-#include <iostream>
-#include <compare>
-#include<algorithm>
-#include <string>
-
-typedef std::complex<double> _cmpd;
-class Quaternion
-{
-	typedef std::complex<_cmpd> _quat;
-	_quat val;
-public:
-	Quaternion() :val(_cmpd(0, 0), _cmpd(0, 0)) {}
-	Quaternion(const double& a, const double& b = 0, const double& c = 0, const double& d = 0) :val(_cmpd(a, b), _cmpd(c, d)) {}
-	Quaternion(_quat val) :val(val) {}
-	Quaternion(_cmpd re, _cmpd im = 0) :val(re, im) {}
-
-	Quaternion& operator=(const Quaternion& other)
-	{
-		this->val = other.val;
-		return *this;
-	}
-
-	inline _cmpd get_first()const { return this->val.real(); }
-	inline _cmpd get_second()const { return this->val.imag(); }
-	inline double get_real()const { return this->val.real().real(); }
-	inline double get_im_i()const { return this->val.real().imag(); }
-	inline double get_im_j()const { return this->val.imag().real(); }
-	inline double get_im_k()const { return this->val.imag().imag(); }
-	
+//#include <complex>
+//#include <iostream>
+//#include <compare>
+//#include<algorithm>
+//#include <string>
+//
+//typedef std::complex<double> _cmpd;
+//class Quaternion
+//{
+//	typedef std::complex<_cmpd> _quat;
+//	_quat val;
+//public:
+//	Quaternion() :val(_cmpd(0, 0), _cmpd(0, 0)) {}
+//	Quaternion(const double& a, const double& b = 0, const double& c = 0, const double& d = 0) :val(_cmpd(a, b), _cmpd(c, d)) {}
+//	Quaternion(_quat val) :val(val) {}
+//	Quaternion(_cmpd re, _cmpd im = 0) :val(re, im) {}
+//
+//	Quaternion& operator=(const Quaternion& other)
+//	{
+//		this->val = other.val;
+//		return *this;
+//	}
+//
+//	inline _cmpd get_first()const { return this->val.real(); }
+//	inline _cmpd get_second()const { return this->val.imag(); }
+//	inline double get_real()const { return this->val.real().real(); }
+//	inline double get_im_i()const { return this->val.real().imag(); }
+//	inline double get_im_j()const { return this->val.imag().real(); }
+//	inline double get_im_k()const { return this->val.imag().imag(); }
+//	
 	/*_cmpd to_complex()const
 	{
 		return val.real();
 	}*/
-	operator _cmpd()
-	{
-		return val.real();
-	}
+//	operator _cmpd()
+//	{
+//		return val.real();
+//	}
+//
+//	operator double ()
+//	{
+//	return val.real().real();
+//	}
+//
+//	inline Quaternion operator+(const Quaternion& other)const
+//	{
+//		return this->val + other.val;
+//	}
+//	inline Quaternion operator+=(const Quaternion& other)
+//	{
+//		this->val = this->val + other.val;
+//		return *this;
+//	}
+//	inline Quaternion operator-=(const Quaternion& other)
+//	{
+//		 this->val = this->val - other.val;
+//		 return *this;
+//	}
+//
+//	inline Quaternion operator*=(const Quaternion& other)
+//	{
+//		this->val = this->val * other.val;
+//		return *this;
+//	}
+//	inline Quaternion operator*(const Quaternion& other)const
+//	{
+//		return Quaternion(this->val.real() * other.val.real() - conj(other.val.imag()) * this->val.imag(),
+//			other.val.imag() * this->val.real() + this->val.imag() * conj(other.val.real()));
+//	}
+//	inline Quaternion operator-(const Quaternion& other)const
+//	{
+//		return this->val - other.val;
+//	}
+//	inline Quaternion operator-()const
+//	{
+//		return -this->val;
+//	}
+//
+//	  operator std::string()const;
+//	
+//
+//
+//	std::partial_ordering operator <=> (const Quaternion& q) const;
+//
+//
+//};
+//std::ostream& operator << (std::ostream& out, const Quaternion& q);
 
-	operator double ()
-	{
-	return val.real().real();
-	}
-
-	inline Quaternion operator+(const Quaternion& other)const
-	{
-		return this->val + other.val;
-	}
-	inline Quaternion operator+=(const Quaternion& other)
-	{
-		this->val = this->val + other.val;
-		return *this;
-	}
-	inline Quaternion operator-=(const Quaternion& other)
-	{
-		 this->val = this->val - other.val;
-		 return *this;
-	}
-
-	inline Quaternion operator*=(const Quaternion& other)
-	{
-		this->val = this->val * other.val;
-		return *this;
-	}
-	inline Quaternion operator*(const Quaternion& other)const
-	{
-		return Quaternion(this->val.real() * other.val.real() - conj(other.val.imag()) * this->val.imag(),
-			other.val.imag() * this->val.real() + this->val.imag() * conj(other.val.real()));
-	}
-	inline Quaternion operator-(const Quaternion& other)const
-	{
-		return this->val - other.val;
-	}
-	inline Quaternion operator-()const
-	{
-		return -this->val;
-	}
-
-	  operator std::string()const;
-	
-
-
-	std::partial_ordering operator <=> (const Quaternion& q) const;
-
-
-};
-std::ostream& operator << (std::ostream& out, const Quaternion& q);
-
-Quaternion conj(const Quaternion& q);
-
-Quaternion operator+(const double& right, const Quaternion& left);
-Quaternion operator*(const double& right, const Quaternion& left);
-Quaternion operator-(const double& right, const Quaternion& left);
-
-Quaternion operator""j(long double val);
-Quaternion operator""k(long double val);
-Quaternion operator""j(unsigned long long int val);
-Quaternion operator""k(unsigned long long int val);
+//Quaternion conj(const Quaternion& q);
+//
+//Quaternion operator+(const double& right, const Quaternion& left);
+//Quaternion operator*(const double& right, const Quaternion& left);
+//Quaternion operator-(const double& right, const Quaternion& left);
+//
+//Quaternion operator""j(long double val);
+//Quaternion operator""k(long double val);
+//Quaternion operator""j(unsigned long long int val);
+//Quaternion operator""k(unsigned long long int val);
