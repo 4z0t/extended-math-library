@@ -41,6 +41,11 @@ void sum_sub_test()
 	b.debug_log();
 	DecInt c = b+a;
 	c.debug_log();
+	DecInt d = b - a;
+	d.print(true);
+	DecInt e = a- b;
+	e.print(true);
+
 	/*(a + b).print();
 	(a - b).print();
 	(b - a).print();*/

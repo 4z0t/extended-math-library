@@ -1,14 +1,6 @@
 #include "Vector3.h"
 
 template<typename T>
-Vector3<T>::Vector3(const T& x, const T& y, const T& z)
-{
-	this->x = x;
-	this->y = y;
-	this->z = z;
-}
-
-template<typename T>
 inline Vector3<T>::Vector3(const Vector3& other)
 {
 	this->x = other.x;

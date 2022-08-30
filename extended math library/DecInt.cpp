@@ -67,16 +67,12 @@ DecInt DecInt::abs_sum(const DecInt& other) const
 		for (uint32_t i = 0; i < this->_len; i++)
 			if (i < other._len)
 			{
-				if (this->_num[i] + other._num[i] == 0)
-					continue;
 				n = std::div(rem + this->_num[i] + other._num[i], (int)milrd);
 				result._num[i] += n.rem;
 				rem = n.quot;
 			}
 			else
 			{
-				if (this->_num[i] == 0)
-					continue;
 				n = std::div(rem + this->_num[i] + result._num[i], (int)milrd);
 				result._num[i] = n.rem;
 				rem = n.quot;
@@ -90,16 +86,12 @@ DecInt DecInt::abs_sum(const DecInt& other) const
 		for (uint32_t i = 0; i < other._len; i++)
 			if (i < this->_len)
 			{
-				if (this->_num[i] + other._num[i] == 0)
-					continue;
 				n = std::div(rem + this->_num[i] + other._num[i], (int)milrd);
 				result._num[i] += n.rem;
 				rem = n.quot;
 			}
 			else
 			{
-				if (other._num[i] == 0)
-					continue;
 				n = std::div(rem + other._num[i] + result._num[i], (int)milrd);
 				result._num[i] = n.rem;
 				rem = n.quot;
@@ -172,7 +164,7 @@ DecInt DecInt::abs_sub(const DecInt& other) const
 }
 
 
-DecInt DecInt::operator*(const DecInt& other) const
+DecInt DecInt::operator*(const DecInt& other) const //Karatsuba algorithm
 {
 	return DecInt();
 }
@@ -213,6 +205,7 @@ DecInt DecInt::operator%(const DecInt& other) const
 
 DecInt& DecInt::operator=(const DecInt& other)
 {
+
 	return *this;
 }
 
@@ -265,6 +258,16 @@ DecInt DecInt::operator-() const
 {
 	return DecInt();
 }
+
+
+
+
+
+
+
+
+
+
 
 
 #ifdef _INITIALIZER_LIST_

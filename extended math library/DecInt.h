@@ -11,7 +11,6 @@ class DecInt :
 	int64_t distance(const DecInt& other)const override;
 	DecInt(const uint32_t& capacity, bool sign) : IntBase(capacity, sign) {}
 	DecInt abs_sum(const DecInt& other)const;
-
 	DecInt abs_sub(const DecInt& other)const;
 	
 public:

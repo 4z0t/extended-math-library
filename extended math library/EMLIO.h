@@ -1,11 +1,7 @@
-#include "DecInt.h"
 #ifndef _EMLIO_
 #define _EMLIO_
 #ifdef _IOSTREAM_
 #ifdef DECINT_H
-
-
-
 
 
 void DecInt::print(bool sep = false) const
@@ -21,7 +17,6 @@ void DecInt::print(bool sep = false) const
 		{
 			std::cout << this->_num[i];
 		}
-
 		zeros = ((this->_num[i] == 0) && zeros);
 		if (i == 0)break;
 		if (sep)std::cout << '\'';
@@ -48,6 +43,20 @@ std::ostream& operator<<(std::ostream& os, const DecInt& value)
 	return os;
 }
 
-#endif // DEBUG
-#endif
-#endif
+#endif //DECINT_H
+
+#ifdef BININT_H
+void BinInt::print(bool sep) const
+{
+}
+
+std::ostream& operator<<(std::ostream& os, const BinInt& value)
+{
+	// TODO: вставьте здесь оператор return
+}
+
+#endif //BININT_H
+
+
+#endif //_IOSTREAM_
+#endif//_EMLIO_

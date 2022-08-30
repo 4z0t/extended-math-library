@@ -144,6 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BinInt.cpp" />
+    <ClCompile Include="tests\BinIntTests.cpp" />
+    <ClCompile Include="tests\DecIntTests.cpp" />
     <ClCompile Include="DecInt.cpp" />
     <ClCompile Include="extended math library.cpp" />
     <ClCompile Include="IntBase.cpp" />

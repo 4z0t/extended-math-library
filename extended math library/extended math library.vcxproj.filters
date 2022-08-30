@@ -16,6 +16,9 @@
     <Filter Include="Исходные файлы\legacy">
       <UniqueIdentifier>{e55909c3-4155-4511-9ee6-b77a4d7bfd42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\tests">
+      <UniqueIdentifier>{7af8a31a-f41d-4986-ae75-341051057c70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="extended math library.cpp">
@@ -70,6 +73,12 @@
       <Filter>Исходные файлы\legacy</Filter>
     </ClCompile>
     <ClCompile Include="BinInt.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\DecIntTests.cpp">
+      <Filter>Исходные файлы\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\BinIntTests.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
