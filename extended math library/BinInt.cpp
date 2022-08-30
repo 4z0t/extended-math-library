@@ -88,36 +88,42 @@ BinInt BinInt::operator%(const BinInt& other) const
 BinInt& BinInt::operator=(const BinInt& other)
 {
 	// TODO: вставьте здесь оператор return
+	return *this;
 }
 
 BinInt& BinInt::operator*=(const BinInt& other)
 {
 	// TODO: вставьте здесь оператор return
+	return *this;
 }
 
 BinInt& BinInt::operator+=(const BinInt& other)
 {
 	// TODO: вставьте здесь оператор return
+	return *this;
 }
 
 BinInt& BinInt::operator-=(const BinInt& other)
 {
 	// TODO: вставьте здесь оператор return
+	return *this;
 }
 
 BinInt& BinInt::operator/=(const BinInt& other)
 {
 	// TODO: вставьте здесь оператор return
+	return *this;
 }
 
 BinInt& BinInt::operator%=(const BinInt& other)
 {
 	// TODO: вставьте здесь оператор return
+	return *this;
 }
 
 BinInt& BinInt::operator++()
 {
-	// TODO: вставьте здесь оператор return
+	return *this;
 }
 
 BinInt BinInt::operator++(int)
@@ -128,6 +134,7 @@ BinInt BinInt::operator++(int)
 BinInt& BinInt::operator--()
 {
 	// TODO: вставьте здесь оператор return
+	return *this;
 }
 
 BinInt BinInt::operator--(int)

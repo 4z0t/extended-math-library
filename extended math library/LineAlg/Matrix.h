@@ -29,6 +29,11 @@ template <Appliable_to_matrix T>
 class Matrix
 {
 private:
+
+	static struct _indexer {
+		unsigned long int i, j;
+	};
+
 	T** mat = nullptr;
 	int rows = 0;
 	int colons = 0;
@@ -96,6 +101,8 @@ public:
 	//other
 	void print();
 	T* operator[](const int& index);
+	T &operator[](const _indexer& indexer);
+	const T &operator[](const _indexer& indexer)const;
 
 
 	//functions of matrices

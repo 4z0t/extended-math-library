@@ -565,3 +565,15 @@ Matrix<T> pow(const Matrix<T>& other, const uint32_t& n)
 	}
 	return result;
 }
+
+template<Appliable_to_matrix T>
+T& Matrix<T>::operator[](const Matrix<T>::_indexer& indexer)
+{
+	return this->mat[indexer.i][indexer.j];
+}
+
+template<Appliable_to_matrix T>
+const T& Matrix<T>::operator[](const _indexer& indexer) const
+{
+	return this->mat[indexer.i][indexer.j];
+}

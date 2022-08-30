@@ -3,6 +3,9 @@
 #include <iostream>
 #include "DecInt.h"
 #include "EMLIO.h"
+#include "LineAlg/Matrix.cpp"
+
+using namespace std;
 
 void io_example()
 {
@@ -39,11 +42,11 @@ void sum_sub_test()
 	a.debug_log();
 	DecInt b = { 1213214 ,0 };
 	b.debug_log();
-	DecInt c = b+a;
+	DecInt c = b + a;
 	c.debug_log();
 	DecInt d = b - a;
 	d.print(true);
-	DecInt e = a- b;
+	DecInt e = a - b;
 	e.print(true);
 
 	/*(a + b).print();
@@ -68,6 +71,6 @@ int main()
 	//compare_test();
 	//debug_test();
 	//cut_move_test();
-	sum_sub_test();
+	//sum_sub_test();
 }
 

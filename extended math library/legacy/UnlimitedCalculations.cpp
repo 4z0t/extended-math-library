@@ -17,6 +17,7 @@
 #include "Vector3.h"
 #include <complex>
 #include"Quaternion.h"
+#include "..\LineAlg\Matrix.h"
 
 Unlint fact(uint32_t n)
 {
@@ -210,6 +211,12 @@ void Matrix<T>::print()
 			std::cout << this->mat[i][j] << ' ';
 		std::cout << std::endl;
 	}
+}
+
+template<Appliable_to_matrix T>
+T& Matrix<T>::operator[](const Matrix<T>::_indexer& indexer)
+{
+	return nullptr;
 }
 
 Ufloat cuberoot(const Ufloat& n)
