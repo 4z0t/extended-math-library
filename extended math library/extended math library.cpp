@@ -2,8 +2,8 @@
 
 #include <iostream>
 #include "DecInt.h"
-#include "EMLIO.h"
 #include "LineAlg/Matrix.cpp"
+#include "EMLIO.h"
 
 using namespace std;
 
@@ -72,5 +72,14 @@ int main()
 	//debug_test();
 	//cut_move_test();
 	//sum_sub_test();
+
+	Matrix<double, 3, 3> a{ 1,1,1,
+							3,4,5,
+							2,5,2 };
+	std::cout << a.inverse() << std::endl;
+	std::cout << ~a * a << std::endl;
+std:cout << Matrix<float, 3>::identity() << endl;
+
+
 }
 

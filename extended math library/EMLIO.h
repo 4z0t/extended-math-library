@@ -58,5 +58,23 @@ std::ostream& operator<<(std::ostream& os, const BinInt& value)
 #endif //BININT_H
 
 
+#ifdef MATRIX_H
+template<typename T, uint32_t Rows, uint32_t Colons>
+std::ostream& operator<<(std::ostream& os, const Matrix<T, Rows, Colons>& matrix)
+{
+	for (uint32_t i = 0; i < matrix.rows; i++)
+	{
+		for (uint32_t j = 0; j < matrix.colons; j++)
+		{
+
+			os << "\t" << matrix.get(i, j);
+		}
+		os << "\n";
+	}
+	return os;
+}
+#endif // MATRIX_H
+
+
 #endif //_IOSTREAM_
 #endif//_EMLIO_
