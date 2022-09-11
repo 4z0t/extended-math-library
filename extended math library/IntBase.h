@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <stdexcept>
+#include <assert.h>
 #ifndef INTBASE_H
 #define INTBASE_H
 
@@ -20,7 +21,7 @@ protected:
 	bool _sign = false;
 
 
-	void extend(const uint32_t& cap);
+	void extend(const uint32_t& cap, bool copy = true);
 
 	T& normalize();
 
@@ -33,6 +34,8 @@ protected:
 	T& cutthis(const uint32_t& length);
 
 	int abs_compare(const IntBase& other)const;
+
+	void copy(const IntBase& other);
 
 	virtual int64_t distance()const = 0;
 	virtual int64_t distance(const T&)const = 0;
@@ -145,14 +148,17 @@ bool IntBase<T>::operator<=(const IntBase& other)const
 
 
 template<typename T>
-void IntBase<T>::extend(const uint32_t& cap)
+void IntBase<T>::extend(const uint32_t& cap, bool copy)
 {
-#ifdef _DEBUG
-	if (cap <= this->_capacity)throw std::invalid_argument("New capacity cant be less than current one");
-#endif // DEBUG
+	assert(cap > this->_capacity);
+	//#ifdef _DEBUG
+	//	if (cap <= this->_capacity)throw std::invalid_argument("New capacity cant be less than current one");
+	//#endif // DEBUG
 	uint32_t* new_num = new uint32_t[cap]{};
-	for (uint32_t i = 0; i < this->_len; i++)
-		new_num[i] = this->_num[i];
+	if (copy) {
+		for (uint32_t i = 0; i < this->_len; i++)
+			new_num[i] = this->_num[i];
+	}
 	delete[] this->_num;
 	this->_capacity = cap;
 	this->_num = new_num;
@@ -280,6 +286,16 @@ int IntBase<T>::abs_compare(const IntBase& other)const
 }
 
 template<typename T>
+void IntBase<T>::copy(const IntBase& other)
+{
+	assert(this->_capacity >= other._len);
+	assert(other._num);
+	assert(this->_num);
+	for (uint32_t i = 0; i < this->_len; i++)
+		this->_num[i] = other._num[i];
+}
+
+template<typename T>
 IntBase<T>::IntBase()
 {
 	this->_sign = false;
@@ -300,8 +316,7 @@ IntBase<T>::IntBase(const uint32_t& capacity, bool sign)
 template<typename T>
 IntBase<T>::IntBase(const IntBase& other) : IntBase(other._len, other._sign)
 {
-	for (uint32_t i = 0; i < this->_len; i++)
-		this->_num[i] = other._num[i];
+	this->copy(other);
 }
 
 template<typename T>

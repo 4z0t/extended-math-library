@@ -60,6 +60,30 @@ void sum_sub_test()
 //	b.print(true);
 //}
 
+void copy_test()
+{
+	DecInt a = { 999999999,999132914 ,546547 };
+	a.debug_log();
+	DecInt b = { 1213214 ,0 };
+	b.debug_log();
+	b = a;
+	b.debug_log();
+
+}
+
+void mult_test()
+{
+	DecInt a = { 999999999,999132914 ,546547 };
+	a.debug_log();
+	DecInt b = { 1213214 ,0 };
+	b.debug_log();
+	DecInt c = -b * -b;
+	c.debug_log();
+	std::cout << c;
+	
+}
+
+
 int main()
 {
 
@@ -68,6 +92,9 @@ int main()
 	//compare_test();
 	//debug_test();
 	//cut_move_test();
-	sum_sub_test();
+	//sum_sub_test();
+	//copy_test();
+	mult_test();
+
 }
 

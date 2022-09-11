@@ -164,9 +164,24 @@ DecInt DecInt::abs_sub(const DecInt& other) const
 }
 
 
-DecInt DecInt::operator*(const DecInt& other) const //Karatsuba algorithm
+DecInt DecInt::operator*(const DecInt& other) const
 {
-	return DecInt();
+
+	DecInt result(this->_len + other._len + 1, this->_sign != other._sign);
+	for (uint32_t i = 0; i < this->_len; i++)
+		for (uint32_t j = 0; j < other._len; j++)
+		{
+			if (this->_num[i] && other._num[j])
+			{
+				unsigned long long res = (unsigned long long)this->_num[i] * (unsigned long long)other._num[j];
+				result._num[i + j] += res % milrd;
+				result._num[i + j + 1] += res / milrd + result._num[i + j] / milrd;
+				//result.num[i + j + 2] += result.num[i + j + 1] / milrd;
+				//result.num[i + j + 1] %= milrd;
+				result._num[i + j] %= milrd;
+			}
+		}
+	return result.cut_zeros();
 }
 
 DecInt DecInt::operator+(const DecInt& other) const
@@ -195,7 +210,35 @@ DecInt DecInt::operator-(const DecInt& other) const
 
 DecInt DecInt::operator/(const DecInt& other) const
 {
-	return DecInt();
+	assert(other.zero());
+		
+	
+	DecInt numerator = *this;
+	numerator._sign = false;
+	DecInt result = 0;
+	DecInt divider;
+	DecInt step;
+	while (true)
+	{
+		divider = other;
+		divider._sign = false;
+		step = 1;
+		if (divider > numerator)
+			break;
+		int64_t counter = numerator.distance(divider) - 1;
+		while (numerator >= divider.move10(++counter));
+
+		divider.movethis10(counter - 1);
+		step.movethis10(counter - 1);
+
+		while (numerator >= divider)
+		{
+			numerator -= divider;
+			result += step;
+		}
+	}
+	result._sign = this->_sign != other._sign;
+	return result.cut_zeros();
 }
 
 DecInt DecInt::operator%(const DecInt& other) const
@@ -206,6 +249,20 @@ DecInt DecInt::operator%(const DecInt& other) const
 DecInt& DecInt::operator=(const DecInt& other)
 {
 
+	if (other._len > this->_capacity)
+	{
+		this->extend((other._len * 3) / 2 + 1, false);
+		this->_len = other._len;
+		this->copy(other);
+
+	}
+	else
+	{
+		this->_len = other._len;
+		this->copy(other);
+		for (uint32_t i = this->_len; i < this->_capacity; i++)
+			this->_num[i] = 0;
+	}
 	return *this;
 }
 
@@ -256,7 +313,9 @@ DecInt DecInt::operator--(int)
 
 DecInt DecInt::operator-() const
 {
-	return DecInt();
+	DecInt result(*this);
+	result._sign = !result._sign;
+	return result;
 }
 
 

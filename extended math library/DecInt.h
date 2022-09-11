@@ -14,7 +14,7 @@ class DecInt :
 	DecInt abs_sub(const DecInt& other)const;
 	
 public:
-	static const uint32_t milrd = 1'000'000'000;
+	static constexpr uint32_t milrd = 1'000'000'000;
 	static int dec_int_length(const uint32_t& num);
 
 	DecInt() : IntBase() {}
