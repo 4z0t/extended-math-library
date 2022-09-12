@@ -160,7 +160,7 @@ BinInt::BinInt(std::initializer_list<uint32_t> num, bool negative)
 	{
 		this->_num[--j] = i;
 	}
-	this->cut_zeros();
+	this->normalize();
 }
 #endif
 

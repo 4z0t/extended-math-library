@@ -5,6 +5,8 @@
 #ifndef INTBASE_H
 #define INTBASE_H
 
+typedef uint32_t u32;
+
 template <typename T>
 class IntBase
 {
@@ -15,23 +17,23 @@ public:
 	static constexpr int LESS = -1;
 
 protected:
-	uint32_t* _num = nullptr;
-	uint32_t _capacity = 0;
-	uint32_t _len = 0;
+	u32* _num = nullptr;
+	u32 _capacity = 0;
+	u32 _len = 0;
 	bool _sign = false;
 
 
-	void extend(const uint32_t& cap, bool copy = true);
+	void extend(const u32& cap, bool copy = true);
 
 	T& normalize();
 
 	T& cut_zeros();
 
-	T movecells(const uint32_t& shift)const;
-	T& movethiscells(const uint32_t& shift);
+	T movecells(const u32& shift)const;
+	T& movethiscells(const u32& shift);
 
-	T cut(const uint32_t& length)const;
-	T& cutthis(const uint32_t& length);
+	T cut(const u32& length)const;
+	T& cutthis(const u32& length);
 
 	int abs_compare(const IntBase& other)const;
 
@@ -39,7 +41,7 @@ protected:
 
 	virtual int64_t distance()const = 0;
 	virtual int64_t distance(const T&)const = 0;
-	IntBase(const uint32_t& capacity, bool sign);
+	IntBase(const u32& capacity, bool sign);
 public:
 
 
@@ -90,7 +92,8 @@ public:
 	void debug_log()
 	{
 		std::cout << "len: " << this->_len << '\n'
-			<< "cap: " << this->_capacity << '\n';
+			<< "cap: " << this->_capacity << '\n'
+			<< "sign: "<<this->_sign << '\n';
 		for (int i = 0; i < this->_capacity; i++)
 		{
 			std::cout << i << ":\t" << this->_num[i] << '\n';
@@ -148,15 +151,15 @@ bool IntBase<T>::operator<=(const IntBase& other)const
 
 
 template<typename T>
-void IntBase<T>::extend(const uint32_t& cap, bool copy)
+void IntBase<T>::extend(const u32& cap, bool copy)
 {
 	assert(cap > this->_capacity);
 	//#ifdef _DEBUG
 	//	if (cap <= this->_capacity)throw std::invalid_argument("New capacity cant be less than current one");
 	//#endif // DEBUG
-	uint32_t* new_num = new uint32_t[cap]{};
+	u32* new_num = new u32[cap]{};
 	if (copy) {
-		for (uint32_t i = 0; i < this->_len; i++)
+		for (u32 i = 0; i < this->_len; i++)
 			new_num[i] = this->_num[i];
 	}
 	delete[] this->_num;
@@ -184,7 +187,7 @@ template<typename T>
 T& IntBase<T>::cut_zeros()
 {
 	if (this->_num[this->_len - 1] == 0)
-		for (uint32_t i = this->_len - 1; ; i--)
+		for (u32 i = this->_len - 1; ; i--)
 			if (this->_num[i] != 0 || i == 0)
 			{
 				this->_len = i + 1;
@@ -194,12 +197,12 @@ T& IntBase<T>::cut_zeros()
 }
 
 template<typename T>
-T IntBase<T>::movecells(const uint32_t& shift) const
+T IntBase<T>::movecells(const u32& shift) const
 {
 	if (shift)
 	{
 		T new_int(this->_len + shift, this->_sign);
-		for (uint32_t i = 0; i < this->_len; i++)
+		for (u32 i = 0; i < this->_len; i++)
 			new_int._num[i + shift] = this->_num[i];
 		return new_int;
 	}
@@ -207,14 +210,14 @@ T IntBase<T>::movecells(const uint32_t& shift) const
 }
 
 template<typename T>
-T& IntBase<T>::movethiscells(const uint32_t& shift)
+T& IntBase<T>::movethiscells(const u32& shift)
 {
 	if (shift)
 	{
 		if (shift + this->_len > this->_capacity)
 		{
-			uint32_t* new_num = new  uint32_t[this->_len + shift]{};
-			for (uint32_t i = 0; i < this->_len; i++)
+			u32* new_num = new  u32[this->_len + shift]{};
+			for (u32 i = 0; i < this->_len; i++)
 				new_num[i + shift] = this->_num[i];
 			delete[] this->_num;
 			this->_len += shift;
@@ -223,9 +226,9 @@ T& IntBase<T>::movethiscells(const uint32_t& shift)
 		}
 		else
 		{
-			for (uint32_t i = this->_len + shift - 1; i >= shift; i--)
+			for (u32 i = this->_len + shift - 1; i >= shift; i--)
 				this->_num[i] = this->_num[i - shift];
-			for (uint32_t i = 0; i < shift; i++)
+			for (u32 i = 0; i < shift; i++)
 				this->_num[i] = 0;
 			this->_len += shift;
 		}
@@ -234,12 +237,12 @@ T& IntBase<T>::movethiscells(const uint32_t& shift)
 }
 
 template<typename T>
-T IntBase<T>::cut(const uint32_t& length) const
+T IntBase<T>::cut(const u32& length) const
 {
 	if (this->_len > length)
 	{
 		T new_unlint(this->_len - length, this->_sign);
-		for (uint32_t i = 0; i < new_unlint._len; i++)
+		for (u32 i = 0; i < new_unlint._len; i++)
 		{
 			new_unlint._num[i] = this->_num[i + length];
 		}
@@ -249,12 +252,12 @@ T IntBase<T>::cut(const uint32_t& length) const
 }
 
 template<typename T>
-T& IntBase<T>::cutthis(const uint32_t& length)
+T& IntBase<T>::cutthis(const u32& length)
 {
 	if (this->_len > length)
 	{
-		uint32_t* new_num = new uint32_t[this->_len -= length]{};
-		for (uint32_t i = 0; i < this->_len; i++)
+		u32* new_num = new u32[this->_len -= length]{};
+		for (u32 i = 0; i < this->_len; i++)
 		{
 			new_num[i] = this->_num[i + length];
 		}
@@ -264,7 +267,7 @@ T& IntBase<T>::cutthis(const uint32_t& length)
 		return *(T*)this;
 	}
 	delete[] this->_num;
-	this->_num = new uint32_t[this->_len = 1]{};
+	this->_num = new u32[this->_len = 1]{};
 	this->_capacity = 1;
 	return *(T*)this;
 }
@@ -276,7 +279,7 @@ int IntBase<T>::abs_compare(const IntBase& other)const
 		return GREATER;
 	if (this->_len < other._len)
 		return LESS;
-	for (uint32_t i = this->_len - 1; ; i--)
+	for (u32 i = this->_len - 1; ; i--)
 	{
 		if (this->_num[i] != other._num[i])
 			return  (this->_num[i] > other._num[i]) ? GREATER : LESS;
@@ -291,7 +294,7 @@ void IntBase<T>::copy(const IntBase& other)
 	assert(this->_capacity >= other._len);
 	assert(other._num);
 	assert(this->_num);
-	for (uint32_t i = 0; i < this->_len; i++)
+	for (u32 i = 0; i < this->_len; i++)
 		this->_num[i] = other._num[i];
 }
 
@@ -301,16 +304,16 @@ IntBase<T>::IntBase()
 	this->_sign = false;
 	this->_len = 1;
 	this->_capacity = 1;
-	this->_num = new uint32_t[this->_capacity]{};
+	this->_num = new u32[this->_capacity]{};
 }
 
 template<typename T>
-IntBase<T>::IntBase(const uint32_t& capacity, bool sign)
+IntBase<T>::IntBase(const u32& capacity, bool sign)
 {
 	this->_sign = sign;
 	this->_len = capacity;
 	this->_capacity = capacity;
-	this->_num = new uint32_t[this->_capacity]{};
+	this->_num = new u32[this->_capacity]{};
 }
 
 template<typename T>

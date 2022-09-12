@@ -7,13 +7,13 @@ inline int64_t DecInt::distance() const
 
 inline int64_t DecInt::distance(const DecInt& other) const
 {
-	return ((int64_t)this->_len - other._len) * 9 + DecInt::dec_int_length(this->_num[this->_len - 1]) - DecInt::dec_int_length(other._num[other._len - 1]);
+	return this->distance() - other.distance();
 }
 
 
-int DecInt::dec_int_length(const uint32_t& num)
+int DecInt::dec_int_length(const u32& num)
 {
-	uint32_t a = num;
+	u32 a = num;
 	int length = 0;
 	while (a)
 	{
@@ -48,7 +48,7 @@ DecInt::DecInt(const int32_t& value) :DecInt(2, false)
 		this->_num[0] = abs(value);
 	}
 }
-DecInt::DecInt(const uint32_t& value)
+DecInt::DecInt(const u32& value)
 {
 }
 DecInt::DecInt(const int64_t& value)
@@ -64,7 +64,7 @@ DecInt DecInt::abs_sum(const DecInt& other) const
 	if (this->_len > other._len)
 	{
 		DecInt result(this->_len + 1, this->_sign);
-		for (uint32_t i = 0; i < this->_len; i++)
+		for (u32 i = 0; i < this->_len; i++)
 			if (i < other._len)
 			{
 				n = std::div(rem + this->_num[i] + other._num[i], (int)milrd);
@@ -83,7 +83,7 @@ DecInt DecInt::abs_sum(const DecInt& other) const
 	else
 	{
 		DecInt result(other._len + 1, this->_sign);
-		for (uint32_t i = 0; i < other._len; i++)
+		for (u32 i = 0; i < other._len; i++)
 			if (i < this->_len)
 			{
 				n = std::div(rem + this->_num[i] + other._num[i], (int)milrd);
@@ -107,14 +107,14 @@ DecInt DecInt::abs_sub(const DecInt& other) const
 	if (compare_result == GREATER)
 	{
 		DecInt result(*this);
-		for (uint32_t i = 0; i < other._len; i++)
+		for (u32 i = 0; i < other._len; i++)
 			if (result._num[i] >= other._num[i])
 			{
 				result._num[i] -= other._num[i];
 			}
 			else
 			{
-				uint32_t j = i + 1;
+				u32 j = i + 1;
 				while (result._num[j] == 0)
 				{
 					result._num[j++] = milrd - 1;
@@ -131,14 +131,14 @@ DecInt DecInt::abs_sub(const DecInt& other) const
 	{
 		DecInt result(other);
 		result._sign = !result._sign;
-		for (uint32_t i = 0; i < this->_len; i++)
+		for (u32 i = 0; i < this->_len; i++)
 			if (result._num[i] >= this->_num[i])
 			{
 				result._num[i] -= this->_num[i];
 			}
 			else
 			{
-				uint32_t j = i + 1;
+				u32 j = i + 1;
 				while (result._num[j] == 0)
 				{
 					result._num[j++] = milrd - 1;
@@ -168,8 +168,8 @@ DecInt DecInt::operator*(const DecInt& other) const
 {
 
 	DecInt result(this->_len + other._len + 1, this->_sign != other._sign);
-	for (uint32_t i = 0; i < this->_len; i++)
-		for (uint32_t j = 0; j < other._len; j++)
+	for (u32 i = 0; i < this->_len; i++)
+		for (u32 j = 0; j < other._len; j++)
 		{
 			if (this->_num[i] && other._num[j])
 			{
@@ -181,7 +181,7 @@ DecInt DecInt::operator*(const DecInt& other) const
 				result._num[i + j] %= milrd;
 			}
 		}
-	return result.cut_zeros();
+	return result.normalize();
 }
 
 DecInt DecInt::operator+(const DecInt& other) const
@@ -208,11 +208,63 @@ DecInt DecInt::operator-(const DecInt& other) const
 	}
 }
 
+DecInt DecInt::move10(const u32& times) const
+{
+	const u32 shift = times / 9;
+	const u32 offset = times % 9;
+	DecInt result(this->_len + shift + 1, this->_sign);
+	for (u32 i = 0; i < this->_len; i++)
+	{
+		result._num[i + shift] += (this->_num[i] % pow10(9 - offset)) * pow10(offset);
+		result._num[i + shift + 1] += this->_num[i] / pow10(9 - offset);
+	}
+	return result.cut_zeros();
+}
+
+
+DecInt& DecInt::movethis10(const u32& times)
+{
+	const u32 shift = times / 9;
+	const u32 offset = times % 9;
+	if (this->_capacity < this->_len + shift + 1)
+	{
+		u32* new_num = new  u32[this->_len + shift + 1]{};
+		this->_capacity = this->_len + shift + 1;
+		for (u32 i = 0; i < this->_len; i++)
+		{
+			new_num[i + shift] += (this->_num[i] % pow10(9 - offset)) * pow10(offset);
+			new_num[i + shift + 1] += this->_num[i] / pow10(9 - offset);
+		}
+		delete[] this->_num;
+		this->_len = this->_capacity;
+		this->_num = new_num;
+	}
+	else
+	{
+		u32 v;
+		for (u32 i = this->_len - 1; ; i--)
+		{
+			v = this->_num[i];
+			this->_num[i + shift] = (v % pow10(9 - offset)) * pow10(offset);
+			this->_num[i + shift + 1] += v / pow10(9 - offset);
+			if (i == 0)break;
+		}
+		for (u32 i = 0; i < shift; i++)
+			this->_num[i] = 0;
+		this->_len = this->_capacity;
+	}
+
+	return this->cut_zeros();
+}
+
+
 DecInt DecInt::operator/(const DecInt& other) const
 {
-	assert(other.zero());
-		
-	
+	if (other.zero())
+	{
+		throw std::invalid_argument("Zero division exception");
+	}
+
 	DecInt numerator = *this;
 	numerator._sign = false;
 	DecInt result = 0;
@@ -238,12 +290,30 @@ DecInt DecInt::operator/(const DecInt& other) const
 		}
 	}
 	result._sign = this->_sign != other._sign;
-	return result.cut_zeros();
+	return result.normalize();
 }
 
 DecInt DecInt::operator%(const DecInt& other) const
 {
-	return DecInt();
+	if (other.zero())
+	{
+		throw std::invalid_argument("Zero division exception");
+	}
+	DecInt numerator = *this;
+	numerator._sign = false;
+	DecInt divider;
+	while (true)
+	{
+		divider = other;
+		divider._sign = false;
+		if (divider > numerator)
+			return numerator.normalize();
+		int64_t counter = numerator.distance(divider) - 1;
+		while (numerator >= divider.move10(++counter));//FIXIT
+		divider.movethis10(counter - 1);
+		while (numerator >= divider)
+			numerator -= divider;
+	}
 }
 
 DecInt& DecInt::operator=(const DecInt& other)
@@ -260,29 +330,34 @@ DecInt& DecInt::operator=(const DecInt& other)
 	{
 		this->_len = other._len;
 		this->copy(other);
-		for (uint32_t i = this->_len; i < this->_capacity; i++)
+		for (u32 i = this->_len; i < this->_capacity; i++)
 			this->_num[i] = 0;
 	}
-	return *this;
+	this->_sign = other._sign;
+	return this->normalize();
 }
 
 DecInt& DecInt::operator*=(const DecInt& other)
 {
+	*this = *this * other;
 	return *this;
 }
 
 DecInt& DecInt::operator+=(const DecInt& other)
 {
+	*this = *this + other;
 	return *this;
 }
 
 DecInt& DecInt::operator-=(const DecInt& other)
 {
+	*this = *this - other;
 	return *this;
 }
 
 DecInt& DecInt::operator/=(const DecInt& other)
 {
+	*this = *this / other;
 	return *this;
 }
 
@@ -330,15 +405,15 @@ DecInt DecInt::operator-() const
 
 
 #ifdef _INITIALIZER_LIST_
-DecInt::DecInt(std::initializer_list<uint32_t> num, bool negative)
+DecInt::DecInt(std::initializer_list<u32> num, bool negative)
 {
 
 	if (this->_num)delete[]this->_num;
 	this->_sign = negative;
-	uint32_t  j = (this->_len = num.size());
+	u32  j = (this->_len = num.size());
 	this->_capacity = this->_len;
-	this->_num = new uint32_t[this->_len]{};
-	for (uint32_t i : num)
+	this->_num = new u32[this->_len]{};
+	for (u32 i : num)
 	{
 #ifdef _DEBUG
 		if (i >= milrd)throw std::invalid_argument("Invalid decimal number initialization");
@@ -346,6 +421,6 @@ DecInt::DecInt(std::initializer_list<uint32_t> num, bool negative)
 
 		this->_num[--j] = i;
 	}
-	this->cut_zeros();
+	this->normalize();
 }
 #endif

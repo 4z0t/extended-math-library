@@ -4,18 +4,53 @@
 #ifndef DECINT_H
 #define DECINT_H
 
+constexpr u32 pow10(const u32 value)
+{
+	switch (value)
+	{
+	case 0:
+		return 1u;
+	case 1:
+		return 10u;
+	case 2:
+		return 100u;
+	case 3:
+		return 1'000u;
+	case 4:
+		return 10'000u;
+	case 5:
+		return 100'000u;
+	case 6:
+		return 1000'000u;
+	case 7:
+		return 10'000'000u;
+	case 8:
+		return 100'000'000u;
+	case 9:
+		return 1000'000'000u;
+	default:
+		assert(value < 10);
+		return 0;
+	}
+}
+
+
+
 class DecInt :
 	public IntBase<DecInt>
 {
 	int64_t distance()const override;
 	int64_t distance(const DecInt& other)const override;
-	DecInt(const uint32_t& capacity, bool sign) : IntBase(capacity, sign) {}
+	DecInt(const u32& capacity, bool sign) : IntBase(capacity, sign) {}
 	DecInt abs_sum(const DecInt& other)const;
 	DecInt abs_sub(const DecInt& other)const;
-	
+
+
 public:
-	static constexpr uint32_t milrd = 1'000'000'000;
-	static int dec_int_length(const uint32_t& num);
+	DecInt move10(const u32& times) const;
+	DecInt& movethis10(const u32& times);
+	static constexpr u32 milrd = 1'000'000'000;
+	static int dec_int_length(const u32& num);
 
 	DecInt() : IntBase() {}
 	DecInt(const DecInt& other) : IntBase(other) {}
@@ -27,7 +62,7 @@ public:
 	DecInt(const uint16_t& value);
 
 	DecInt(const int32_t& value);
-	DecInt(const uint32_t& value);
+	DecInt(const u32& value);
 
 	DecInt(const int64_t& value);
 	DecInt(const uint64_t& value);
@@ -65,8 +100,8 @@ public:
 #endif
 
 #ifdef _INITIALIZER_LIST_
-	DecInt(std::initializer_list<uint32_t> num) :DecInt(num, false) {}
-	DecInt(std::initializer_list<uint32_t> num, bool negative);
+	DecInt(std::initializer_list<u32> num) :DecInt(num, false) {}
+	DecInt(std::initializer_list<u32> num, bool negative);
 #endif
 	friend class IntBase<DecInt>;
 };
