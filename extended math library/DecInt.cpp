@@ -50,6 +50,16 @@ DecInt::DecInt(const int32_t& value) :DecInt(2, false)
 }
 DecInt::DecInt(const u32& value)
 {
+	if (value >= milrd)
+	{
+		this->_num[0] = value % milrd;
+		this->_num[1] = value / milrd;
+	}
+	else
+	{
+		this->_len = 1;
+		this->_num[0] = value;
+	}
 }
 DecInt::DecInt(const int64_t& value)
 {
@@ -57,7 +67,7 @@ DecInt::DecInt(const int64_t& value)
 DecInt::DecInt(const uint64_t& value)
 {
 }
-DecInt _MOVE_BIGINT_REF DecInt::abs_sum(const DecInt& other) const
+DecInt  DecInt::abs_sum(const DecInt& other) const
 {
 	std::div_t n;
 	int rem = 0;
@@ -79,7 +89,7 @@ DecInt _MOVE_BIGINT_REF DecInt::abs_sum(const DecInt& other) const
 			}
 		result._num[this->_len] = rem;
 		result.cut_zeros();
-		return _MOVE_BIGINT_OP(result);
+		return (result);
 	}
 	else
 	{
@@ -99,11 +109,11 @@ DecInt _MOVE_BIGINT_REF DecInt::abs_sum(const DecInt& other) const
 			}
 		result._num[other._len] = rem;
 		result.cut_zeros();
-		return _MOVE_BIGINT_OP(result);
+		return (result);
 	}
 }
 
-DecInt _MOVE_BIGINT_REF DecInt::abs_sub(const DecInt& other) const
+DecInt  DecInt::abs_sub(const DecInt& other) const
 {
 	int compare_result = this->abs_compare(other);
 	if (compare_result == GREATER)
@@ -127,7 +137,7 @@ DecInt _MOVE_BIGINT_REF DecInt::abs_sub(const DecInt& other) const
 				result._num[i] += milrd - other._num[i];
 			}
 		result.cut_zeros();
-		return _MOVE_BIGINT_OP(result);
+		return (result);
 	}
 	else if (compare_result == LESS)
 	{
@@ -151,7 +161,7 @@ DecInt _MOVE_BIGINT_REF DecInt::abs_sub(const DecInt& other) const
 				result._num[i] += milrd - this->_num[i];
 			}
 		result.cut_zeros();
-		return _MOVE_BIGINT_OP(result);
+		return (result);
 	}
 #ifdef _DEBUG
 	else if (compare_result == EQUAL)
@@ -167,7 +177,7 @@ DecInt _MOVE_BIGINT_REF DecInt::abs_sub(const DecInt& other) const
 }
 
 
-DecInt _MOVE_BIGINT_REF DecInt::operator*(const DecInt& other) const
+DecInt  DecInt::operator*(const DecInt& other) const
 {
 
 	DecInt result(this->_len + other._len + 1, this->_sign != other._sign);
@@ -184,34 +194,34 @@ DecInt _MOVE_BIGINT_REF DecInt::operator*(const DecInt& other) const
 				result._num[i + j] %= milrd;
 			}
 		}
-	return _MOVE_BIGINT_OP(result.normalize());
+	return (result.normalize());
 }
 
-DecInt _MOVE_BIGINT_REF DecInt::operator+(const DecInt& other) const
+DecInt  DecInt::operator+(const DecInt& other) const
 {
 	if (this->_sign == other._sign)
 	{
-		return _MOVE_BIGINT_OP(this->abs_sum(other));
+		return (this->abs_sum(other));
 	}
 	else
 	{
-		return _MOVE_BIGINT_OP(this->abs_sub(other));
+		return (this->abs_sub(other));
 	}
 }
 
-DecInt _MOVE_BIGINT_REF  DecInt::operator-(const DecInt& other) const
+DecInt   DecInt::operator-(const DecInt& other) const
 {
 	if (this->_sign != other._sign)
 	{
-		return _MOVE_BIGINT_OP(this->abs_sum(other));
+		return (this->abs_sum(other));
 	}
 	else
 	{
-		return _MOVE_BIGINT_OP(this->abs_sub(other));
+		return (this->abs_sub(other));
 	}
 }
 
-DecInt _MOVE_BIGINT_REF DecInt::move10(const u32& times) const
+DecInt  DecInt::move10(const u32& times) const
 {
 	const u32 shift = times / 9;
 	const u32 offset = times % 9;
@@ -221,7 +231,7 @@ DecInt _MOVE_BIGINT_REF DecInt::move10(const u32& times) const
 		result._num[i + shift] += (this->_num[i] % pow10(9 - offset)) * pow10(offset);
 		result._num[i + shift + 1] += this->_num[i] / pow10(9 - offset);
 	}
-	return _MOVE_BIGINT_OP(result.cut_zeros());
+	return (result.cut_zeros());
 }
 
 
@@ -261,7 +271,7 @@ DecInt& DecInt::movethis10(const u32& times)
 }
 
 
-DecInt _MOVE_BIGINT_REF DecInt::operator/(const DecInt& other) const
+DecInt  DecInt::operator/(const DecInt& other) const
 {
 	if (other.zero())
 	{
@@ -293,10 +303,10 @@ DecInt _MOVE_BIGINT_REF DecInt::operator/(const DecInt& other) const
 		}
 	}
 	result._sign = this->_sign != other._sign;
-	return _MOVE_BIGINT_OP(result.normalize());
+	return (result.normalize());
 }
 
-DecInt _MOVE_BIGINT_REF DecInt::operator%(const DecInt& other) const
+DecInt  DecInt::operator%(const DecInt& other) const
 {
 	if (other.zero())
 	{
@@ -310,7 +320,7 @@ DecInt _MOVE_BIGINT_REF DecInt::operator%(const DecInt& other) const
 		divider = other;
 		divider._sign = false;
 		if (divider > numerator)
-			return _MOVE_BIGINT_OP(numerator.normalize());
+			return (numerator.normalize());
 		int64_t counter = numerator.distance(divider) - 1;
 		while (numerator >= divider.move10(++counter));//FIXIT
 		divider.movethis10(counter - 1);

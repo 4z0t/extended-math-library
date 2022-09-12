@@ -12,14 +12,14 @@ int64_t BinInt::distance(const BinInt& other) const
 
 inline BinInt::BinInt(const uint32_t& capacity, bool sign) : IntBase(capacity, sign) {}
 
-BinInt _MOVE_BIGINT_REF BinInt::abs_sum(const BinInt& other) const
+BinInt  BinInt::abs_sum(const BinInt& other) const
 {
-	return _MOVE_BIGINT_OP(BinInt());
+	return (BinInt());
 }
 
-BinInt _MOVE_BIGINT_REF BinInt::abs_sub(const BinInt& other) const
+BinInt  BinInt::abs_sub(const BinInt& other) const
 {
-	return _MOVE_BIGINT_OP(BinInt());
+	return (BinInt());
 }
 
 
@@ -60,27 +60,27 @@ BinInt::BinInt(const uint64_t& value)
 {
 }
 
-BinInt _MOVE_BIGINT_REF BinInt::operator*(const BinInt& other) const
+BinInt  BinInt::operator*(const BinInt& other) const
 {
 	return BinInt();
 }
 
-BinInt _MOVE_BIGINT_REF BinInt::operator+(const BinInt& other) const
+BinInt  BinInt::operator+(const BinInt& other) const
 {
 	return BinInt();
 }
 
-BinInt _MOVE_BIGINT_REF BinInt::operator-(const BinInt& other) const
+BinInt  BinInt::operator-(const BinInt& other) const
 {
 	return BinInt();
 }
 
-BinInt _MOVE_BIGINT_REF BinInt::operator/(const BinInt& other) const
+BinInt  BinInt::operator/(const BinInt& other) const
 {
 	return BinInt();
 }
 
-BinInt _MOVE_BIGINT_REF BinInt::operator%(const BinInt& other) const
+BinInt  BinInt::operator%(const BinInt& other) const
 {
 	return BinInt();
 }

@@ -5,15 +5,10 @@
 #ifndef INTBASE_H
 #define INTBASE_H
 
+
 #if _HAS_CXX17 
 #include <utility>
-#define _MOVE_BIGINT_REF &&
-#define _MOVE_BIGINT_OP(v) (std::move(v))
-#else 
-#define _MOVE_BIGINT_REF
-#define _MOVE_BIGINT_OP(v) (v)
 #endif
-
 typedef uint32_t u32;
 
 template <typename T>
@@ -38,10 +33,10 @@ protected:
 
 	T& cut_zeros();
 
-	T _MOVE_BIGINT_REF movecells(const u32& shift)const;
+	T  movecells(const u32& shift)const;
 	T& movethiscells(const u32& shift);
 
-	T _MOVE_BIGINT_REF cut(const u32& length)const;
+	T  cut(const u32& length)const;
 	T& cutthis(const u32& length);
 
 	int abs_compare(const IntBase& other)const;
@@ -71,11 +66,11 @@ public:
 	explicit operator bool()const;
 
 
-	virtual T _MOVE_BIGINT_REF operator*(const T& other)const = 0;
-	virtual T _MOVE_BIGINT_REF operator+(const T& other)const = 0;
-	virtual T _MOVE_BIGINT_REF operator-(const T& other)const = 0;
-	virtual T _MOVE_BIGINT_REF operator/(const T& other)const = 0;
-	virtual T _MOVE_BIGINT_REF operator%(const T& other)const = 0;
+	virtual T  operator*(const T& other)const = 0;
+	virtual T  operator+(const T& other)const = 0;
+	virtual T  operator-(const T& other)const = 0;
+	virtual T  operator/(const T& other)const = 0;
+	virtual T  operator%(const T& other)const = 0;
 
 	virtual T& operator=(const T& other) = 0;
 
@@ -108,7 +103,7 @@ public:
 		std::cout << "len: " << this->_len << '\n'
 			<< "cap: " << this->_capacity << '\n'
 			<< "sign: " << this->_sign << '\n';
-		for (int i = 0; i < this->_capacity; i++)
+		for (u32 i = 0; i < this->_capacity; i++)
 		{
 			std::cout << i << ":\t" << this->_num[i] << '\n';
 		}
@@ -211,7 +206,7 @@ T& IntBase<T>::cut_zeros()
 }
 
 template<typename T>
-T _MOVE_BIGINT_REF IntBase<T>::movecells(const u32& shift) const
+T  IntBase<T>::movecells(const u32& shift) const
 {
 	T new_int(this->_len + shift, this->_sign);
 	for (u32 i = 0; i < this->_len; i++)
@@ -247,7 +242,7 @@ T& IntBase<T>::movethiscells(const u32& shift)
 }
 
 template<typename T>
-T _MOVE_BIGINT_REF IntBase<T>::cut(const u32& length) const
+T  IntBase<T>::cut(const u32& length) const
 {
 	if (this->_len > length)
 	{

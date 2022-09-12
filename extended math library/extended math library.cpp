@@ -4,6 +4,7 @@
 #include <utility>
 #include "DecInt.h"
 #include "EMLIO.h"
+#include "Functions.h"
 
 void io_example()
 {
@@ -27,6 +28,7 @@ void compare_test()
 	std::cout << (a < b) << std::endl;
 }
 
+#if _DEBUG
 void debug_test()
 {
 	DecInt a{ 0,0,5325235 };
@@ -158,10 +160,17 @@ void test()
 
 }
 
+#endif
+void test_factorial()
+{
+	DecInt f = factorial(1000000);
+	std::cout << f;
+}
+
 int main()
 {
 
-	test();
+	//test();
 	//io_example();
 	//compare_test();
 	//debug_test();
@@ -172,6 +181,6 @@ int main()
 	//move10_test();
 	//div_test();
 	//modulo_test();
-	
+	test_factorial();
 }
 
