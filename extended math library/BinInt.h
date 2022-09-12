@@ -8,8 +8,8 @@ class BinInt :
 	int64_t distance()const override;
 	int64_t distance(const BinInt& other)const override;
 	BinInt(const uint32_t& capacity, bool sign);
-	BinInt abs_sum(const BinInt& other)const;
-	BinInt abs_sub(const BinInt& other)const;
+	BinInt _MOVE_BIGINT_REF abs_sum(const BinInt& other)const;
+	BinInt _MOVE_BIGINT_REF abs_sub(const BinInt& other)const;
 
 public:
 	static const uint32_t mask = 0xffffffff;
@@ -30,11 +30,11 @@ public:
 	BinInt(const uint64_t& value);
 
 
-	BinInt operator*(const BinInt& other)const override;
-	BinInt operator+(const BinInt& other)const override;
-	BinInt operator-(const BinInt& other)const override;
-	BinInt operator/(const BinInt& other)const override;
-	BinInt operator%(const BinInt& other)const override;
+	BinInt _MOVE_BIGINT_REF operator*(const BinInt& other)const override;
+	BinInt _MOVE_BIGINT_REF operator+(const BinInt& other)const override;
+	BinInt _MOVE_BIGINT_REF operator-(const BinInt& other)const override;
+	BinInt _MOVE_BIGINT_REF operator/(const BinInt& other)const override;
+	BinInt _MOVE_BIGINT_REF operator%(const BinInt& other)const override;
 
 	BinInt& operator=(const BinInt& other) override;
 

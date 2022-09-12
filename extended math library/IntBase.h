@@ -5,6 +5,15 @@
 #ifndef INTBASE_H
 #define INTBASE_H
 
+#if _HAS_CXX17 
+#include <utility>
+#define _MOVE_BIGINT_REF &&
+#define _MOVE_BIGINT_OP(v) (std::move(v))
+#else 
+#define _MOVE_BIGINT_REF
+#define _MOVE_BIGINT_OP(v) (v)
+#endif
+
 typedef uint32_t u32;
 
 template <typename T>
@@ -29,10 +38,10 @@ protected:
 
 	T& cut_zeros();
 
-	T movecells(const u32& shift)const;
+	T _MOVE_BIGINT_REF movecells(const u32& shift)const;
 	T& movethiscells(const u32& shift);
 
-	T cut(const u32& length)const;
+	T _MOVE_BIGINT_REF cut(const u32& length)const;
 	T& cutthis(const u32& length);
 
 	int abs_compare(const IntBase& other)const;
@@ -62,11 +71,11 @@ public:
 	explicit operator bool()const;
 
 
-	virtual T operator*(const T& other)const = 0;
-	virtual T operator+(const T& other)const = 0;
-	virtual T operator-(const T& other)const = 0;
-	virtual T operator/(const T& other)const = 0;
-	virtual T operator%(const T& other)const = 0;
+	virtual T _MOVE_BIGINT_REF operator*(const T& other)const = 0;
+	virtual T _MOVE_BIGINT_REF operator+(const T& other)const = 0;
+	virtual T _MOVE_BIGINT_REF operator-(const T& other)const = 0;
+	virtual T _MOVE_BIGINT_REF operator/(const T& other)const = 0;
+	virtual T _MOVE_BIGINT_REF operator%(const T& other)const = 0;
 
 	virtual T& operator=(const T& other) = 0;
 
@@ -87,13 +96,18 @@ public:
 	IntBase();
 	IntBase(const IntBase& other);
 
+#if _HAS_CXX17 
+	IntBase(IntBase&& other)noexcept;
+	T& operator=(T&& other);
+#endif
+
 #ifdef _DEBUG 
 #ifdef _IOSTREAM_
 	void debug_log()
 	{
 		std::cout << "len: " << this->_len << '\n'
 			<< "cap: " << this->_capacity << '\n'
-			<< "sign: "<<this->_sign << '\n';
+			<< "sign: " << this->_sign << '\n';
 		for (int i = 0; i < this->_capacity; i++)
 		{
 			std::cout << i << ":\t" << this->_num[i] << '\n';
@@ -197,16 +211,12 @@ T& IntBase<T>::cut_zeros()
 }
 
 template<typename T>
-T IntBase<T>::movecells(const u32& shift) const
+T _MOVE_BIGINT_REF IntBase<T>::movecells(const u32& shift) const
 {
-	if (shift)
-	{
-		T new_int(this->_len + shift, this->_sign);
-		for (u32 i = 0; i < this->_len; i++)
-			new_int._num[i + shift] = this->_num[i];
-		return new_int;
-	}
-	return *(T*)this;
+	T new_int(this->_len + shift, this->_sign);
+	for (u32 i = 0; i < this->_len; i++)
+		new_int._num[i + shift] = this->_num[i];
+	return new_int;
 }
 
 template<typename T>
@@ -237,7 +247,7 @@ T& IntBase<T>::movethiscells(const u32& shift)
 }
 
 template<typename T>
-T IntBase<T>::cut(const u32& length) const
+T _MOVE_BIGINT_REF IntBase<T>::cut(const u32& length) const
 {
 	if (this->_len > length)
 	{
@@ -322,15 +332,44 @@ IntBase<T>::IntBase(const IntBase& other) : IntBase(other._len, other._sign)
 	this->copy(other);
 }
 
+#if _HAS_CXX17 
+template<typename T>
+IntBase<T>::IntBase(IntBase&& other)noexcept
+{
+	this->_capacity = other._capacity;
+	this->_len = other._len;
+	this->_sign = other._sign;
+	this->_num = other._num;
+
+	other._num = nullptr;
+	other._sign = false;
+	other._len = 0;
+	other._capacity = 0;
+}
+
+template<typename T>
+T& IntBase<T>::operator=(T&& other)
+{
+	if (this->_num != nullptr)
+		delete[]this->_num;
+	this->_capacity = other._capacity;
+	this->_len = other._len;
+	this->_sign = other._sign;
+	this->_num = other._num;
+
+	other._num = nullptr;
+	other._sign = false;
+	other._len = 0;
+	other._capacity = 0;
+	return *(T*)this;
+}
+#endif
 template<typename T>
 IntBase<T>::~IntBase()
 {
 
-#ifdef _DEBUG
-	if (_num)
-#endif // DEBUG
+	if (_num != nullptr)
 		delete[]_num;
 }
-
 
 #endif

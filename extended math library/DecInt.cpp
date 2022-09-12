@@ -57,7 +57,7 @@ DecInt::DecInt(const int64_t& value)
 DecInt::DecInt(const uint64_t& value)
 {
 }
-DecInt DecInt::abs_sum(const DecInt& other) const
+DecInt _MOVE_BIGINT_REF DecInt::abs_sum(const DecInt& other) const
 {
 	std::div_t n;
 	int rem = 0;
@@ -78,7 +78,8 @@ DecInt DecInt::abs_sum(const DecInt& other) const
 				rem = n.quot;
 			}
 		result._num[this->_len] = rem;
-		return result.cut_zeros();
+		result.cut_zeros();
+		return _MOVE_BIGINT_OP(result);
 	}
 	else
 	{
@@ -97,11 +98,12 @@ DecInt DecInt::abs_sum(const DecInt& other) const
 				rem = n.quot;
 			}
 		result._num[other._len] = rem;
-		return result.cut_zeros();
+		result.cut_zeros();
+		return _MOVE_BIGINT_OP(result);
 	}
 }
 
-DecInt DecInt::abs_sub(const DecInt& other) const
+DecInt _MOVE_BIGINT_REF DecInt::abs_sub(const DecInt& other) const
 {
 	int compare_result = this->abs_compare(other);
 	if (compare_result == GREATER)
@@ -124,8 +126,8 @@ DecInt DecInt::abs_sub(const DecInt& other) const
 				result._num[j] -= 1;
 				result._num[i] += milrd - other._num[i];
 			}
-
-		return result.cut_zeros();
+		result.cut_zeros();
+		return _MOVE_BIGINT_OP(result);
 	}
 	else if (compare_result == LESS)
 	{
@@ -148,7 +150,8 @@ DecInt DecInt::abs_sub(const DecInt& other) const
 				result._num[j] -= 1;
 				result._num[i] += milrd - this->_num[i];
 			}
-		return result.cut_zeros();
+		result.cut_zeros();
+		return _MOVE_BIGINT_OP(result);
 	}
 #ifdef _DEBUG
 	else if (compare_result == EQUAL)
@@ -164,7 +167,7 @@ DecInt DecInt::abs_sub(const DecInt& other) const
 }
 
 
-DecInt DecInt::operator*(const DecInt& other) const
+DecInt _MOVE_BIGINT_REF DecInt::operator*(const DecInt& other) const
 {
 
 	DecInt result(this->_len + other._len + 1, this->_sign != other._sign);
@@ -181,34 +184,34 @@ DecInt DecInt::operator*(const DecInt& other) const
 				result._num[i + j] %= milrd;
 			}
 		}
-	return result.normalize();
+	return _MOVE_BIGINT_OP(result.normalize());
 }
 
-DecInt DecInt::operator+(const DecInt& other) const
+DecInt _MOVE_BIGINT_REF DecInt::operator+(const DecInt& other) const
 {
 	if (this->_sign == other._sign)
 	{
-		return this->abs_sum(other);
+		return _MOVE_BIGINT_OP(this->abs_sum(other));
 	}
 	else
 	{
-		return this->abs_sub(other);
+		return _MOVE_BIGINT_OP(this->abs_sub(other));
 	}
 }
 
-DecInt DecInt::operator-(const DecInt& other) const
+DecInt _MOVE_BIGINT_REF  DecInt::operator-(const DecInt& other) const
 {
 	if (this->_sign != other._sign)
 	{
-		return this->abs_sum(other);
+		return _MOVE_BIGINT_OP(this->abs_sum(other));
 	}
 	else
 	{
-		return this->abs_sub(other);
+		return _MOVE_BIGINT_OP(this->abs_sub(other));
 	}
 }
 
-DecInt DecInt::move10(const u32& times) const
+DecInt _MOVE_BIGINT_REF DecInt::move10(const u32& times) const
 {
 	const u32 shift = times / 9;
 	const u32 offset = times % 9;
@@ -218,7 +221,7 @@ DecInt DecInt::move10(const u32& times) const
 		result._num[i + shift] += (this->_num[i] % pow10(9 - offset)) * pow10(offset);
 		result._num[i + shift + 1] += this->_num[i] / pow10(9 - offset);
 	}
-	return result.cut_zeros();
+	return _MOVE_BIGINT_OP(result.cut_zeros());
 }
 
 
@@ -258,7 +261,7 @@ DecInt& DecInt::movethis10(const u32& times)
 }
 
 
-DecInt DecInt::operator/(const DecInt& other) const
+DecInt _MOVE_BIGINT_REF DecInt::operator/(const DecInt& other) const
 {
 	if (other.zero())
 	{
@@ -290,10 +293,10 @@ DecInt DecInt::operator/(const DecInt& other) const
 		}
 	}
 	result._sign = this->_sign != other._sign;
-	return result.normalize();
+	return _MOVE_BIGINT_OP(result.normalize());
 }
 
-DecInt DecInt::operator%(const DecInt& other) const
+DecInt _MOVE_BIGINT_REF DecInt::operator%(const DecInt& other) const
 {
 	if (other.zero())
 	{
@@ -307,7 +310,7 @@ DecInt DecInt::operator%(const DecInt& other) const
 		divider = other;
 		divider._sign = false;
 		if (divider > numerator)
-			return numerator.normalize();
+			return _MOVE_BIGINT_OP(numerator.normalize());
 		int64_t counter = numerator.distance(divider) - 1;
 		while (numerator >= divider.move10(++counter));//FIXIT
 		divider.movethis10(counter - 1);
@@ -345,7 +348,7 @@ DecInt& DecInt::operator*=(const DecInt& other)
 
 DecInt& DecInt::operator+=(const DecInt& other)
 {
-	*this = *this + other;
+	*this = DecInt(*this) + other;
 	return *this;
 }
 
@@ -394,6 +397,23 @@ DecInt DecInt::operator-() const
 }
 
 
+//#if _HAS_CXX17
+//DecInt& DecInt::operator=(DecInt&& other)
+//{
+//	if (this->_num != nullptr)
+//		delete[]this->_num;
+//	this->_capacity = other._capacity;
+//	this->_len = other._len;
+//	this->_sign = other._sign;
+//	this->_num = other._num;
+//
+//	other._num = nullptr;
+//	other._sign = false;
+//	other._len = 0;
+//	other._capacity = 0;
+//	return *this;
+//}
+//#endif
 
 
 

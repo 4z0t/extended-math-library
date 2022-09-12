@@ -42,12 +42,12 @@ class DecInt :
 	int64_t distance()const override;
 	int64_t distance(const DecInt& other)const override;
 	DecInt(const u32& capacity, bool sign) : IntBase(capacity, sign) {}
-	DecInt abs_sum(const DecInt& other)const;
-	DecInt abs_sub(const DecInt& other)const;
+	DecInt _MOVE_BIGINT_REF abs_sum(const DecInt& other)const;
+	DecInt _MOVE_BIGINT_REF abs_sub(const DecInt& other)const;
 
 
 public:
-	DecInt move10(const u32& times) const;
+	DecInt _MOVE_BIGINT_REF move10(const u32& times) const;
 	DecInt& movethis10(const u32& times);
 	static constexpr u32 milrd = 1'000'000'000;
 	static int dec_int_length(const u32& num);
@@ -68,11 +68,11 @@ public:
 	DecInt(const uint64_t& value);
 
 
-	DecInt operator*(const DecInt& other)const override;
-	DecInt operator+(const DecInt& other)const override;
-	DecInt operator-(const DecInt& other)const override;
-	DecInt operator/(const DecInt& other)const override;
-	DecInt operator%(const DecInt& other)const override;
+	DecInt _MOVE_BIGINT_REF operator*(const DecInt& other)const override;
+	DecInt _MOVE_BIGINT_REF operator+(const DecInt& other)const override;
+	DecInt _MOVE_BIGINT_REF operator-(const DecInt& other)const override;
+	DecInt _MOVE_BIGINT_REF operator/(const DecInt& other)const override;
+	DecInt _MOVE_BIGINT_REF operator%(const DecInt& other)const override;
 
 	DecInt& operator=(const DecInt& other) override;
 
@@ -89,10 +89,10 @@ public:
 	DecInt operator-()const override;
 
 
-
-
-
-
+#if _HAS_CXX17 
+	DecInt(DecInt&& other) noexcept :IntBase(std::move(other)) {};
+	DecInt& operator=(DecInt&& other) noexcept{ IntBase::operator=(std::move(other)); return *this; };
+#endif
 
 #ifdef _IOSTREAM_
 	void print(bool sep)const;

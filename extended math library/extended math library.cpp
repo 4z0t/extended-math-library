@@ -1,6 +1,7 @@
 ﻿
 
 #include <iostream>
+#include <utility>
 #include "DecInt.h"
 #include "EMLIO.h"
 
@@ -9,7 +10,7 @@ void io_example()
 	DecInt a{ 2,0,5325235 };
 	a.print(true);
 	std::cout << a;
-
+	
 }
 
 void compare_test()
@@ -147,10 +148,20 @@ void modulo_test()
 	
 }
 
+void test()
+{
+
+	DecInt a = 5;
+	DecInt b = a;
+	DecInt c = a + b;
+	c.debug_log();
+
+}
+
 int main()
 {
 
-
+	test();
 	//io_example();
 	//compare_test();
 	//debug_test();
@@ -160,7 +171,7 @@ int main()
 	//mult_test();
 	//move10_test();
 	//div_test();
-	modulo_test();
+	//modulo_test();
 	
 }
 
