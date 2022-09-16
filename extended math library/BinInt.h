@@ -3,7 +3,7 @@
 #define BININT_H
 #include "IntBase.h"
 class BinInt :
-    public IntBase<BinInt>
+	public IntBase<BinInt>
 {
 	int64_t distance()const override;
 	int64_t distance(const BinInt& other)const override;
@@ -69,7 +69,7 @@ public:
 
 private:
 
-    bool _inverted = false;
+	bool _inverted = false;
 
 };
 

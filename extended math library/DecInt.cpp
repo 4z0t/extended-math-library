@@ -192,7 +192,7 @@ DecInt  DecInt::operator*(const DecInt& other) const
 				result._num[i + j + 1] += r.quot;
 			}
 		}
-	return (result.normalize());
+	return result.normalize();
 }
 
 DecInt  DecInt::operator+(const DecInt& other) const

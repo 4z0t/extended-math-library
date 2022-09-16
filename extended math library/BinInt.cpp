@@ -1,13 +1,24 @@
 #include "BinInt.h"
 
-int64_t BinInt::distance() const
+
+char bin_int_length(uint32_t num)
 {
-	return int64_t();
+	char i = 0;
+	while (num) {
+		num >>= 1; i++;
+	}
+	return i;
 }
+
+inline int64_t BinInt::distance() const
+{
+	return ((int64_t)(this->_len)) * sizeof(uint32_t) + bin_int_length(this->_num[this->_len - 1]);
+}
+
 
 int64_t BinInt::distance(const BinInt& other) const
 {
-	return int64_t();
+	return this->distance() - other.distance();
 }
 
 inline BinInt::BinInt(const uint32_t& capacity, bool sign) : IntBase(capacity, sign) {}

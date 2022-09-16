@@ -194,7 +194,7 @@ int main()
 	//move10_test();
 	//div_test();
 	//modulo_test();
-	test_factorial();
+	//test_factorial();
 	//mult_test2();
 }
 
