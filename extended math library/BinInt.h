@@ -11,6 +11,23 @@ class BinInt :
 	BinInt  abs_sum(const BinInt& other)const;
 	BinInt  abs_sub(const BinInt& other)const;
 
+
+	typedef struct _sum
+	{
+		uint32_t rest;
+		uint32_t num;
+
+	}; 
+	
+	
+	static _sum smart_sum(const uint32_t& n1, const uint32_t& n2)
+	{
+		_sum result;
+		result.num = n1 + n2;
+		result.rest = (result.num < n1) ? 1 : 0;
+		return result;
+	}
+
 public:
 	static const uint32_t mask = 0xffffffff;
 
@@ -51,7 +68,10 @@ public:
 	BinInt operator-()const override;
 
 
-
+#if _HAS_CXX17 
+	BinInt(BinInt&& other) noexcept :IntBase(std::move(other)) {};
+	inline BinInt& operator=(BinInt&& other) noexcept { IntBase::operator=(std::move(other)); return *this; };
+#endif
 
 
 

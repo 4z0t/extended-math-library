@@ -81,6 +81,9 @@
     <ClCompile Include="tests\BinIntTests.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Файлы заголовков</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IntBase.h">
@@ -141,6 +144,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Functions.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

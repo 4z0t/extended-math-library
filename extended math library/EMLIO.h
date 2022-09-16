@@ -52,7 +52,19 @@ void BinInt::print(bool sep) const
 
 std::ostream& operator<<(std::ostream& os, const BinInt& value)
 {
-	// TODO: вставьте здесь оператор return
+
+	if (value._sign)
+		os << '-';
+	os << std::hex;
+	for (u32 i = value._len - 1;; i--)
+	{
+		os.fill('0');
+		os.width(8);
+		os << value._num[i] << '.';
+		if (i == 0)break;
+	}
+	os << std::dec << std::endl;
+	return os;
 }
 
 #endif //BININT_H

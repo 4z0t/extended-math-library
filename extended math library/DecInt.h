@@ -27,7 +27,7 @@ constexpr u32 pow10(const u32 value)
 	case 8:
 		return 100'000'000u;
 	case 9:
-		return 1000'000'000u;
+		return 1'000'000'000u;
 	default:
 		assert(value < 10);
 		return 0;

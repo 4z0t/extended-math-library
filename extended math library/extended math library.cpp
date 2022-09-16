@@ -4,15 +4,18 @@
 #include <fstream>
 #include <utility>
 #include "DecInt.h"
+#include "BinInt.h"
 #include "EMLIO.h"
 #include "Functions.h"
+#include "Timer.h"
+
 
 void io_example()
 {
 	DecInt a{ 2,0,5325235 };
 	a.print(true);
 	std::cout << a;
-	
+
 }
 
 void compare_test()
@@ -126,7 +129,7 @@ void div_test()
 
 
 
-	
+
 }
 
 
@@ -136,7 +139,7 @@ void modulo_test()
 	a.debug_log();
 	DecInt b = { 1213214 ,0 };
 	b.debug_log();
-	
+
 	DecInt n = a / b;
 
 	DecInt c = a % b;
@@ -148,7 +151,7 @@ void modulo_test()
 
 	DecInt d = b % a;
 	d.debug_log();
-	
+
 }
 
 void test()
@@ -175,14 +178,19 @@ void test_factorial()
 {
 	std::ofstream file;
 	file.open("fact100000.txt");
-	DecInt f = factorial(100000);
+	DecInt f = dec_factorial(100000);
+	file << f;
+}
+void btest_factorial()
+{
+	std::ofstream file;
+	file.open("fact100000.txt");
+	BinInt f = bin_factorial(100000);
 	file << f;
 }
 
-
-int main()
+void test_DecInt()
 {
-
 	//test();
 	//io_example();
 	//compare_test();
@@ -196,5 +204,42 @@ int main()
 	//modulo_test();
 	//test_factorial();
 	//mult_test2();
+}
+#if _DEBUG
+void btest_sum()
+{
+	BinInt a = { 1,1 };
+	a.debug_log();
+	BinInt b = { 2,0xffaabbcc };
+	b.debug_log();
+	BinInt c = a + b;
+	c.debug_log();
+	BinInt d = a - b;
+	d.debug_log();
+	BinInt e = b - a;
+	e.debug_log();
+
+
+}
+#endif
+
+
+void compare_speed()
+{
+	Timer t;
+
+	dec_fib(1000000);
+	double d = t.elapsed();
+	std::cout << d << std::endl;
+	t.reset();
+	bin_fib(1000000);
+	d = t.elapsed();
+	std::cout << d << std::endl;
+}
+
+int main()
+{
+
+	compare_speed();
 }
 

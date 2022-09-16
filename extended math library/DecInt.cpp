@@ -48,7 +48,7 @@ DecInt::DecInt(const int32_t& value) :DecInt(2, false)
 		this->_num[0] = abs(value);
 	}
 }
-DecInt::DecInt(const u32& value)
+DecInt::DecInt(const u32& value) :DecInt(2, false)
 {
 	if (value >= milrd)
 	{
