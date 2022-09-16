@@ -1,6 +1,7 @@
 ﻿
 
 #include <iostream>
+#include <fstream>
 #include <utility>
 #include "DecInt.h"
 #include "EMLIO.h"
@@ -160,12 +161,24 @@ void test()
 
 }
 
+void mult_test2()
+{
+	DecInt a = { 1 ,999'999'999 };
+	a.debug_log();
+	DecInt b = { 1 ,999'999'999 };
+	b.debug_log();
+	DecInt c = a * b;
+	c.debug_log();
+}
 #endif
 void test_factorial()
 {
-	DecInt f = factorial(1000000);
-	std::cout << f;
+	std::ofstream file;
+	file.open("fact100000.txt");
+	DecInt f = factorial(100000);
+	file << f;
 }
+
 
 int main()
 {
@@ -182,5 +195,6 @@ int main()
 	//div_test();
 	//modulo_test();
 	test_factorial();
+	//mult_test2();
 }
 

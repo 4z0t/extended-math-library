@@ -22,16 +22,16 @@ int DecInt::dec_int_length(const u32& num)
 	}
 	return length;
 }
-DecInt::DecInt(const int8_t& value)
+DecInt::DecInt(const int8_t& value) :DecInt(int32_t(value))
 {
 }
-DecInt::DecInt(const uint8_t& value)
+DecInt::DecInt(const uint8_t& value) :DecInt(int32_t(value))
 {
 }
-DecInt::DecInt(const int16_t& value)
+DecInt::DecInt(const int16_t& value) :DecInt(int32_t(value))
 {
 }
-DecInt::DecInt(const uint16_t& value)
+DecInt::DecInt(const uint16_t& value) :DecInt(int32_t(value))
 {
 }
 DecInt::DecInt(const int32_t& value) :DecInt(2, false)
@@ -179,19 +179,17 @@ DecInt  DecInt::abs_sub(const DecInt& other) const
 
 DecInt  DecInt::operator*(const DecInt& other) const
 {
-
+	std::lldiv_t r;
 	DecInt result(this->_len + other._len + 1, this->_sign != other._sign);
 	for (u32 i = 0; i < this->_len; i++)
 		for (u32 j = 0; j < other._len; j++)
 		{
 			if (this->_num[i] && other._num[j])
 			{
-				unsigned long long res = (unsigned long long)this->_num[i] * (unsigned long long)other._num[j];
-				result._num[i + j] += res % milrd;
-				result._num[i + j + 1] += res / milrd + result._num[i + j] / milrd;
-				//result.num[i + j + 2] += result.num[i + j + 1] / milrd;
-				//result.num[i + j + 1] %= milrd;
-				result._num[i + j] %= milrd;
+				int64_t res = static_cast<uint64_t>(this->_num[i]) * static_cast<uint64_t>(other._num[j]);
+				r = std::div(res + result._num[i + j], milrd);
+				result._num[i + j] = r.rem;
+				result._num[i + j + 1] += r.quot;
 			}
 		}
 	return (result.normalize());
