@@ -11,15 +11,17 @@ class BinInt :
 	BinInt  abs_sum(const BinInt& other)const;
 	BinInt  abs_sub(const BinInt& other)const;
 
+	BinInt& abs_inc()override;
+	BinInt& abs_dec()override;
 
-	typedef struct _sum
+	struct _sum
 	{
 		uint32_t rest;
 		uint32_t num;
 
-	}; 
-	
-	
+	};
+
+
 	static _sum smart_sum(const uint32_t& n1, const uint32_t& n2)
 	{
 		_sum result;

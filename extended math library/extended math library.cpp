@@ -186,6 +186,7 @@ void btest_factorial()
 	std::ofstream file;
 	file.open("fact100000.txt");
 	BinInt f = bin_factorial(100000);
+
 	file << f;
 }
 
@@ -221,6 +222,19 @@ void btest_sum()
 
 
 }
+
+void inc_test()
+{
+	BinInt b = { 1,0 };
+	b--;
+	b.debug_log();
+
+	DecInt d = { 1,0 };
+	d = -d;
+	d++;
+	d.debug_log();
+}
+
 #endif
 
 
@@ -228,11 +242,11 @@ void compare_speed()
 {
 	Timer t;
 
-	dec_fib(1000000);
+	Factorial<DecInt>(100000);
 	double d = t.elapsed();
 	std::cout << d << std::endl;
 	t.reset();
-	bin_fib(1000000);
+	Factorial<BinInt>(100000);
 	d = t.elapsed();
 	std::cout << d << std::endl;
 }
@@ -240,6 +254,7 @@ void compare_speed()
 int main()
 {
 
-	compare_speed();
+	//compare_speed();
+	inc_test();
 }
 

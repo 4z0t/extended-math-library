@@ -39,6 +39,12 @@ protected:
 	T  cut(const u32& length)const;
 	T& cutthis(const u32& length);
 
+	virtual T  abs_sum(const T& other)const = 0;
+	virtual	T  abs_sub(const T& other)const = 0;
+	virtual	T& abs_inc() = 0;
+	virtual	T& abs_dec() = 0;
+
+
 	int abs_compare(const IntBase& other)const;
 
 	void copy(const IntBase& other);
@@ -46,6 +52,9 @@ protected:
 	virtual int64_t distance()const = 0;
 	virtual int64_t distance(const T&)const = 0;
 	IntBase(const u32& capacity, bool sign);
+
+
+
 public:
 
 
@@ -106,7 +115,7 @@ public:
 		for (u32 i = 0; i < this->_capacity; i++)
 		{
 			std::cout << i << ":\t" << this->_num[i] << '\n';
-		}
+}
 	}
 #endif
 #endif // _DEBUG

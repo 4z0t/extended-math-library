@@ -48,3 +48,29 @@ BinInt bin_fib(const u32& val)
 }
 
 #endif // BININT_H
+
+
+template <typename T>
+T Factorial(u32 v)
+{
+	T result = 1;
+	for (u32 i = 2; i <= v; i++)
+		result *= i;
+	return result;
+}
+
+
+template <typename T>
+T Fibonacci(u32 v)
+{
+	T result = 0;
+	T a = 1;
+	T b = 1;
+	for (u32 i = 0; i < v; i++)
+	{
+		b = a + result;
+		result = a;
+		a = b;
+	}
+	return result;
+}

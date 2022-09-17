@@ -25,16 +25,16 @@ int DecInt::dec_int_length(const u32& num)
 DecInt::DecInt(const int8_t& value) :DecInt(int32_t(value))
 {
 }
-DecInt::DecInt(const uint8_t& value) :DecInt(int32_t(value))
+DecInt::DecInt(const uint8_t& value) : DecInt(int32_t(value))
 {
 }
-DecInt::DecInt(const int16_t& value) :DecInt(int32_t(value))
+DecInt::DecInt(const int16_t& value) : DecInt(int32_t(value))
 {
 }
-DecInt::DecInt(const uint16_t& value) :DecInt(int32_t(value))
+DecInt::DecInt(const uint16_t& value) : DecInt(int32_t(value))
 {
 }
-DecInt::DecInt(const int32_t& value) :DecInt(2, false)
+DecInt::DecInt(const int32_t& value) : DecInt(2, false)
 {
 	this->_sign = (value < 0);
 	if (abs(value) >= milrd)
@@ -174,6 +174,47 @@ DecInt  DecInt::abs_sub(const DecInt& other) const
 	}
 #endif // _DEBUG
 	return DecInt(0);
+}
+
+DecInt& DecInt::abs_inc()
+{
+	bool is_out = false;
+	for (u32 i = 0; i < this->_len; i++)
+	{
+		if (this->_num[i] != milrd - 1)
+		{
+			this->_num[i]++;
+			is_out = true;
+			break;
+		}
+		this->_num[i] = 0;
+	}
+	if (!is_out)
+	{
+		if (this->_capacity == this->_len)
+		{
+			this->extend((this->_len * 3) / 2 + 1, false);
+		}
+		this->_num[this->_len] = 1;
+		this->_len++;
+	}
+
+	return *this;
+}
+
+DecInt& DecInt::abs_dec()
+{
+	for (u32 i = 0; i < this->_len; i++)
+	{
+		if (this->_num[i] != 0)
+		{
+			this->_num[i]--;
+			break;
+		}
+		this->_num[i] = milrd - 1;
+	}
+
+	return this->normalize();
 }
 
 
@@ -379,22 +420,40 @@ DecInt& DecInt::operator%=(const DecInt& other)
 
 DecInt& DecInt::operator++()
 {
-	return *this;
+	if (this->_sign)
+	{
+		return this->abs_dec();
+	}
+	else
+	{
+		return this->abs_inc();
+	}
 }
 
 DecInt DecInt::operator++(int)
 {
-	return DecInt();
+	DecInt result(*this);
+	++(*this);
+	return result;
 }
 
 DecInt& DecInt::operator--()
 {
-	return *this;
+	if (this->_sign)
+	{
+		return this->abs_inc();
+	}
+	else
+	{
+		return this->abs_dec();
+	}
 }
 
 DecInt DecInt::operator--(int)
 {
-	return DecInt();
+	DecInt result(*this);
+	--(*this);
+	return result;
 }
 
 DecInt DecInt::operator-() const

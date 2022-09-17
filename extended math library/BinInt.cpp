@@ -10,6 +10,46 @@ char bin_int_length(uint32_t num)
 	return i;
 }
 
+BinInt& BinInt::abs_inc()
+{
+	bool is_out = false;
+	for (u32 i = 0; i < this->_len; i++)
+	{
+		if (this->_num[i] != mask)
+		{
+			this->_num[i]++;
+			is_out = true;
+			break;
+		}
+		this->_num[i] = 0;
+	}
+	if (!is_out)
+	{
+		if (this->_capacity == this->_len)
+		{
+			this->extend((this->_len * 3) / 2 + 1, false);
+		}
+		this->_num[this->_len] = 1;
+		this->_len++;
+	}
+
+	return *this;
+}
+
+BinInt& BinInt::abs_dec()
+{
+	for (u32 i = 0; i < this->_len; i++)
+	{
+		if (this->_num[i] != 0)
+		{
+			this->_num[i]--;
+			break;
+		}
+		this->_num[i] = mask;
+	}
+	return this->normalize();
+}
+
 inline int64_t BinInt::distance() const
 {
 	return ((int64_t)(this->_len)) * sizeof(uint32_t) + bin_int_length(this->_num[this->_len - 1]);
@@ -128,19 +168,19 @@ inline BinInt::BinInt() : IntBase() {}
 
 inline BinInt::BinInt(const BinInt& other) : IntBase(other) {}
 
-BinInt::BinInt(const int8_t& value) :BinInt(int32_t(value))
+BinInt::BinInt(const int8_t& value) : BinInt(int32_t(value))
 {
 }
-BinInt::BinInt(const uint8_t& value) :BinInt(int32_t(value))
+BinInt::BinInt(const uint8_t& value) : BinInt(int32_t(value))
 {
 }
-BinInt::BinInt(const int16_t& value) :BinInt(int32_t(value))
+BinInt::BinInt(const int16_t& value) : BinInt(int32_t(value))
 {
 }
-BinInt::BinInt(const uint16_t& value) :BinInt(int32_t(value))
+BinInt::BinInt(const uint16_t& value) : BinInt(int32_t(value))
 {
 }
-BinInt::BinInt(const int32_t& value) :BinInt(1, false)
+BinInt::BinInt(const int32_t& value) : BinInt(1, false)
 {
 	this->_sign = (value < 0);
 
@@ -268,24 +308,46 @@ BinInt& BinInt::operator%=(const BinInt& other)
 
 BinInt& BinInt::operator++()
 {
-	return *this;
-	// TODO: вставьте здесь оператор return
+	if (this->_sign)
+	{
+		return this->abs_dec();
+	}
+	else
+	{
+		return this->abs_inc();
+	}
+
 }
 
 BinInt BinInt::operator++(int)
 {
-	return BinInt();
+	BinInt result(*this);
+	++(*this);
+	return result;
 }
 
 BinInt& BinInt::operator--()
 {
-	return *this;
-	// TODO: вставьте здесь оператор return
+	if (this->_sign)
+	{
+		return this->abs_inc();
+	}
+	else
+	{
+		if (this->zero())
+		{
+			this->_sign = true;
+			return this->abs_inc();
+		}
+		return this->abs_dec();
+	}
 }
 
 BinInt BinInt::operator--(int)
 {
-	return BinInt();
+	BinInt result(*this);
+	--(*this);
+	return result;
 }
 
 BinInt BinInt::operator-() const

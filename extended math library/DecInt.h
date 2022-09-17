@@ -30,7 +30,7 @@ constexpr u32 pow10(const u32 value)
 		return 1'000'000'000u;
 	default:
 		assert(value < 10);
-		return 0;
+		return 1u;
 	}
 }
 
@@ -45,6 +45,8 @@ class DecInt :
 	DecInt  abs_sum(const DecInt& other)const;
 	DecInt  abs_sub(const DecInt& other)const;
 
+	DecInt& abs_inc()override;
+	DecInt& abs_dec()override;
 
 public:
 	DecInt  move10(const u32& times) const;
@@ -91,7 +93,7 @@ public:
 
 #if _HAS_CXX17 
 	DecInt(DecInt&& other) noexcept :IntBase(std::move(other)) {};
-	inline DecInt& operator=(DecInt&& other) noexcept{ IntBase::operator=(std::move(other)); return *this; };
+	inline DecInt& operator=(DecInt&& other) noexcept { IntBase::operator=(std::move(other)); return *this; };
 #endif
 
 #ifdef _IOSTREAM_
