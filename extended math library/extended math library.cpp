@@ -5,9 +5,12 @@
 #include <utility>
 #include "DecInt.h"
 #include "BinInt.h"
-#include "EMLIO.h"
 #include "Functions.h"
 #include "Timer.h"
+#include "FloatBase.h"
+#include "EMLIO.h"
+
+FloatBase<DecInt> u;
 
 
 void io_example()

@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BinInt.cpp" />
+    <ClCompile Include="FloatBase.cpp" />
     <ClCompile Include="tests\BinIntTests.cpp" />
     <ClCompile Include="tests\DecIntTests.cpp" />
     <ClCompile Include="DecInt.cpp" />
@@ -237,8 +238,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinInt.h" />
+    <ClInclude Include="DecFloat.h" />
     <ClInclude Include="DecInt.h" />
     <ClInclude Include="EMLIO.h" />
+    <ClInclude Include="FloatBase.h" />
     <ClInclude Include="Functions.h" />
     <ClInclude Include="IntBase.h" />
     <ClInclude Include="legacy\BitFrac.h">
