@@ -155,9 +155,6 @@
     <ClInclude Include="FloatBase.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="DecFloat.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="legacy\ln2.10000">

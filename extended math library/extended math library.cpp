@@ -3,14 +3,14 @@
 #include <iostream>
 #include <fstream>
 #include <utility>
+#include "FloatBase.h"
 #include "DecInt.h"
 #include "BinInt.h"
 #include "Functions.h"
 #include "Timer.h"
-#include "FloatBase.h"
 #include "EMLIO.h"
 
-FloatBase<DecInt> u;
+
 
 
 void io_example()
@@ -243,6 +243,10 @@ void compare_speed()
 int main()
 {
 
-	compare_speed();
+	//compare_speed();
+
+	FloatBase<DecInt> u = DecInt(3);
+	FloatBase<DecInt> t = DecInt(4);
+	u + t;
 }
 

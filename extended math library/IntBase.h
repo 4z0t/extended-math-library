@@ -90,6 +90,13 @@ public:
 
 	IntBase();
 	IntBase(const IntBase& other);
+#ifdef FLOAT_BASE_H
+	friend class FloatBase<IntBase>;
+#ifdef _IOSTREAM_
+	friend std::ostream& operator<<(std::ostream& os, const FloatBase<IntBase>& value);
+#endif
+#endif // FLOAT_BASE_H
+
 
 #if _HAS_CXX17 
 	IntBase(IntBase&& other)noexcept;

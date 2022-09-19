@@ -238,7 +238,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinInt.h" />
-    <ClInclude Include="DecFloat.h" />
     <ClInclude Include="DecInt.h" />
     <ClInclude Include="EMLIO.h" />
     <ClInclude Include="FloatBase.h" />

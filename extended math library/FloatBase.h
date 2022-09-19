@@ -127,7 +127,7 @@ FloatBase<T>::FloatBase<T>(const T& other, const uint32_t& accur, bool domove)
 template <typename T>
 FloatBase<T>::FloatBase<T>(const T& other)
 {
-	this->_int = other.movecells(this->_precision = FloatBase<T>::get__precision());
+	this->_int = other.movecells(this->_precision = FloatBase<T>::get_precision());
 }
 
 template <typename T>
