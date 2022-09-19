@@ -48,22 +48,22 @@ std::ostream& operator<<(std::ostream& os, const FloatBase<DecInt>& value)
 {
 	if (value._precision >= value._int._len)
 	{
-		uint32_t zero_counter = (value.precision - value._int.len);
-		if (value._int.negative)
+		uint32_t zero_counter = (value._precision - value._int.len);
+		if (value._int._sign)
 			os << '-';
 		os << "0.";
-		for (uint32_t i = value._int.len - 1; ; i--)
+		for (uint32_t i = value._int._len - 1; ; i--)
 		{
-			if (value._int.num[i] == 0)
+			if (value._int._num[i] == 0)
 				zero_counter++;
 			else
 			{
 				for (uint32_t zeros = 0; zeros < zero_counter * 9; zeros++)
 					os << 0;
-				for (uint32_t j = 0; j < 9 - length_int(value._int.num[i]); j++)
+				for (uint32_t j = 0; j < 9 - DecInt::dec_int_length(value._int._num[i]); j++)
 					os << 0;
-				if (value._int.num[i] != 0)
-					os << value._int.num[i];
+				if (value._int._num[i] != 0)
+					os << value._int._num[i];
 				zero_counter = 0;
 			}
 			if (i == 0)break;
@@ -72,30 +72,30 @@ std::ostream& operator<<(std::ostream& os, const FloatBase<DecInt>& value)
 	else
 	{
 		bool zeros = true;
-		if (value._int.negative)
+		if (value._int._sign)
 			os << '-';
 		for (uint32_t i = value._int.len - 1; i >= value.precision; i--)
 		{
-			for (uint32_t j = 0; j < 9 - length_int(value._int.num[i]) && !zeros; j++)
+			for (uint32_t j = 0; j < 9 - length_int(value._int._num[i]) && !zeros; j++)
 				os << 0;
-			if (value._int.num[i] != 0 || (i == 0 && zeros))
-				os << value._int.num[i];
-			zeros = ((value._int.num[i] == 0) && zeros);
+			if (value._int._num[i] != 0 || (i == 0 && zeros))
+				os << value._int._num[i];
+			zeros = ((value._int._num[i] == 0) && zeros);
 		}
 		uint32_t zero_counter = 0;
 		os << '.';
 		for (int i = value.precision - 1; i >= 0; i--)
 		{
-			if (value._int.num[i] == 0)
+			if (value._int._num[i] == 0)
 				zero_counter++;
 			else
 			{
 				for (uint32_t zeros = 0; zeros < zero_counter * 9; zeros++)
 					os << 0;
-				for (uint32_t j = 0; j < 9 - length_int(value._int.num[i]); j++)
+				for (uint32_t j = 0; j < 9 - length_int(value._int._num[i]); j++)
 					os << 0;
-				if (value._int.num[i] != 0)
-					os << value._int.num[i];
+				if (value._int._num[i] != 0)
+					os << value._int._num[i];
 				zero_counter = 0;
 			}
 		}

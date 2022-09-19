@@ -391,7 +391,7 @@ FloatBase<T>::operator float() const
 			exponent++;
 			if (exponent == UINT8_MAX)
 			{
-				if (this->_int.negative)
+				if (this->_int._sign)
 					return -INFINITY;
 				return INFINITY;
 			}
@@ -423,7 +423,7 @@ FloatBase<T>::operator float() const
 		buffer *= 2;
 	}
 	r |= (uint32_t)exponent << 23;
-	if (this->_int.negative)
+	if (this->_int._sign)
 		r |= (1u << 31);
 	//std::memcpy(&result, &r, sizeof result);
 
@@ -443,7 +443,7 @@ FloatBase<T>::operator double() const
 			exponent++;
 			if (exponent == 2047)
 			{
-				if (this->_int.negative)
+				if (this->_int._sign)
 					return -INFINITY;
 				return INFINITY;
 			}
@@ -475,7 +475,7 @@ FloatBase<T>::operator double() const
 		buffer *= 2;
 	}
 	r |= (uint64_t)exponent << 52;
-	if (this->_int.negative)
+	if (this->_int._sign)
 		r |= (1ull << 63);
 	//std::memcpy(&result, &r, sizeof result);
 
