@@ -17,9 +17,9 @@ class BinInt :
 		uint32_t rest;
 		uint32_t num;
 
-	}; 
-	
-	
+	};
+
+
 	static _sum smart_sum(const uint32_t& n1, const uint32_t& n2)
 	{
 		_sum result;
@@ -29,6 +29,9 @@ class BinInt :
 	}
 
 public:
+
+	static u32 bin_int_length(uint32_t num);
+
 	static const uint32_t mask = 0xffffffff;
 
 	BinInt();
@@ -73,7 +76,12 @@ public:
 	inline BinInt& operator=(BinInt&& other) noexcept { IntBase::operator=(std::move(other)); return *this; };
 #endif
 
-
+#ifdef FLOAT_BASE_H
+	friend class FloatBase< BinInt>;
+#ifdef _IOSTREAM_
+	friend std::ostream& operator<<(std::ostream& os, const FloatBase<BinInt>& value);
+#endif
+#endif
 
 
 #ifdef _IOSTREAM_
@@ -92,5 +100,7 @@ private:
 	bool _inverted = false;
 
 };
-
+#ifdef FLOAT_BASE_H
+typedef FloatBase< BinInt> BinFloat;
+#endif
 #endif // !BININT_H

@@ -7,8 +7,11 @@
 #include <math.h>
 
 
+#if _HAS_CXX17 
+#include <utility>
+#endif
 
-template <typename T >
+template <class T >
 class FloatBase
 {
 public:
@@ -21,34 +24,60 @@ public:
 	FloatBase(const double& value);
 	FloatBase(const T& other, const uint32_t& _precision, bool domove = true);
 
-	FloatBase operator*(const FloatBase& other)const;
-	FloatBase operator+(const FloatBase& other)const;
-	FloatBase operator-(const FloatBase& other)const;
+	FloatBase(const int8_t& value);
+	FloatBase(const uint8_t& value);
 
-	
-	FloatBase operator/(const T& other)const;
+	FloatBase(const int16_t& value);
+	FloatBase(const uint16_t& value);
+
+	FloatBase(const int32_t& value);
+	FloatBase(const uint32_t& value);
+
+	FloatBase(const int64_t& value);
+	FloatBase(const uint64_t& value);
+
+
+	FloatBase operator*(const FloatBase& other)const;
+	/*template<typename Int>
+	FloatBase operator*(const Int& other);*/
+
+	FloatBase operator+(const FloatBase& other)const;
+	/*template<typename Int>
+	FloatBase operator+(const Int& other);*/
+
+	FloatBase operator-(const FloatBase& other)const;
+	//template<typename Int>
+	//FloatBase operator-(const Int& other);
+
 	FloatBase operator/(const FloatBase& other)const;
-	
-	
+	FloatBase operator/(const T& other)const;
+	/*template<typename Int>
+	FloatBase operator/(const Int& other);*/
+
 
 	explicit operator double()const;
 	explicit operator float()const;
 
 	FloatBase& operator+=(const FloatBase& other);
 	FloatBase& operator+=(const T& other);
-	
+	/*template<typename Int>
+	FloatBase& operator+=(const Int& other);*/
 
 	FloatBase& operator-=(const FloatBase& other);
 	FloatBase& operator-=(const T& other);
-	
+	/*template<typename Int>
+	FloatBase& operator-=(const Int& other);*/
 
 	FloatBase& operator/=(const FloatBase& other);
 	FloatBase& operator/=(const T& other);
-	
+	/*template<typename Int>
+	FloatBase& operator/=(const Int& other);*/
 
 	FloatBase& operator*=(const FloatBase& other);
 	FloatBase& operator*=(const T& other);
-	
+	/*template<typename Int>
+	FloatBase& operator*=(const Int& other);*/
+
 
 	FloatBase& operator=(const FloatBase& other);
 
@@ -65,6 +94,11 @@ public:
 	static uint32_t get_precision();
 
 
+#if _HAS_CXX17 
+	FloatBase(FloatBase&& other) noexcept;
+	inline FloatBase& operator=(FloatBase&& other) noexcept;
+#endif
+
 #ifdef _IOSTREAM_
 	friend std::ostream& operator<<(std::ostream& os, const FloatBase& value);
 #endif
@@ -79,65 +113,116 @@ protected:
 
 };
 
-template <typename T>
+template <class T>
 uint32_t FloatBase<T>::settable_precision = FloatBase<T>::BASIC_PRECISION;
-template <typename T>
+template <class T>
 bool FloatBase<T>::is_set = false;
 
 
-
-template <typename T>
-FloatBase<T>::FloatBase<T>()
+#if _HAS_CXX17 
+template <class T>
+FloatBase<T>::FloatBase(FloatBase&& other)noexcept :_int(std::move(other._int)), _precision(other._precision)
 {
-	this->_int = 0;
-	this->_precision = BASIC_PRECISION;
+};
+
+template <class T>
+inline FloatBase<T>& FloatBase<T>::operator=(FloatBase&& other) noexcept
+{
+	_int = std::move(other._int);
+	_precision = other._precision;
+	return *this;
+};
+#endif
+
+
+template <class T>
+FloatBase<T>::FloatBase<T>() :_int(), _precision(BASIC_PRECISION)
+{
 }
 
-template <typename T>
+template <class T>
 FloatBase<T>::~FloatBase<T>()
 {
 
 }
 
-template <typename T>
-FloatBase<T>::FloatBase<T>(const FloatBase<T>& other)
+template <class T>
+FloatBase<T>::FloatBase<T>(const FloatBase<T>& other) :_int(other._int), _precision(other._precision)
 {
-	this->_int = other._int;
-	this->_precision = other._precision;
 }
 
 
-template <typename T>
+template <class T>
 FloatBase<T>::FloatBase<T>(const T& other, const uint32_t& accur, bool domove)
 {
+	this->_precision = accur;
 	if (domove)
 	{
-		this->_int = other.movecells(this->_precision = accur);
+		this->_int = other.movecells(this->_precision);
 	}
 	else
 	{
-		this->_precision = accur;
 		this->_int = other;
 	}
 }
 
-
-
-
-template <typename T>
-FloatBase<T>::FloatBase<T>(const T& other)
+template<class T>
+inline FloatBase<T>::FloatBase(const int8_t& value) :FloatBase(T(value))
 {
-	this->_int = other.movecells(this->_precision = FloatBase<T>::get_precision());
 }
 
-template <typename T>
+template<class T>
+inline FloatBase<T>::FloatBase(const uint8_t& value) : FloatBase(T(value))
+{
+}
+
+template<class T>
+inline FloatBase<T>::FloatBase(const int16_t& value) : FloatBase(T(value))
+{
+}
+
+template<class T>
+inline FloatBase<T>::FloatBase(const uint16_t& value) : FloatBase(T(value))
+{
+}
+
+template<class T>
+inline FloatBase<T>::FloatBase(const int32_t& value) : FloatBase(T(value))
+{
+}
+
+template<class T>
+inline FloatBase<T>::FloatBase(const uint32_t& value) : FloatBase(T(value))
+{
+}
+
+template<class T>
+inline FloatBase<T>::FloatBase(const int64_t& value) : FloatBase(T(value))
+{
+}
+
+
+template<class T>
+inline FloatBase<T>::FloatBase(const uint64_t& value) :FloatBase(T(value))
+{
+}
+
+
+
+
+template <class T>
+FloatBase<T>::FloatBase<T>(const T& other) : _int(other.movecells(get_precision())), _precision(get_precision())
+{
+}
+
+template <class T>
 void FloatBase<T>::set_precision(const uint32_t& accur)
 {
 	settable_precision = accur;
 	is_set = true;
 }
 
-template <typename T>
+template <class T>
 uint32_t FloatBase<T>::get_precision()
 {
 	if (is_set)
@@ -145,7 +230,7 @@ uint32_t FloatBase<T>::get_precision()
 	return BASIC_PRECISION;
 }
 
-template <typename T>
+template <class T>
 FloatBase<T> FloatBase<T>::operator+(const FloatBase<T>& other)const
 {
 	if (this->_precision == other._precision)
@@ -159,7 +244,7 @@ FloatBase<T> FloatBase<T>::operator+(const FloatBase<T>& other)const
 	return FloatBase<T>(this->_int + other._int.cut(other._precision - this->_precision), this->_precision, false);
 }
 
-template <typename T>
+template <class T>
 FloatBase<T> FloatBase<T>::operator-(const FloatBase<T>& other)const
 {
 	if (this->_precision == other._precision)
@@ -173,7 +258,7 @@ FloatBase<T> FloatBase<T>::operator-(const FloatBase<T>& other)const
 	return FloatBase<T>(this->_int - other._int.cut(other._precision - this->_precision), this->_precision, false);
 }
 
-template <typename T>
+template <class T>
 FloatBase<T> FloatBase<T>::operator*(const FloatBase<T>& other)const
 {
 	return FloatBase<T>((this->_int * other._int).cut((this->_precision > other._precision) ? this->_precision : other._precision),
@@ -182,25 +267,25 @@ FloatBase<T> FloatBase<T>::operator*(const FloatBase<T>& other)const
 }
 
 
-template <typename T>
+template <class T>
 FloatBase<T> FloatBase<T>::operator/(const FloatBase<T>& other)const
 {
 	return FloatBase<T>(((this->_int.movecells(other._precision)) / other._int), this->_precision, false);
 }
 
-template <typename T>
+template <class T>
 FloatBase<T> FloatBase<T>::operator/(const T& other)const
 {
 	return FloatBase<T>(this->_int / other, this->_precision, false);
 }
 
 
-template <typename T>
+template <class T>
 FloatBase<T> FloatBase<T>::operator-()const
 {
 	return FloatBase<T>(-this->_int, this->_precision, false);
 }
-template <typename T>
+template <class T>
 bool FloatBase<T>::operator==(const FloatBase<T>& other)const
 {
 	if (this->_precision == other._precision)
@@ -209,12 +294,12 @@ bool FloatBase<T>::operator==(const FloatBase<T>& other)const
 		return this->_int == other._int.movecells(this->_precision - other._precision);
 	return this->_int.movecells(other._precision - this->_precision) == other._int;
 }
-template <typename T>
+template <class T>
 bool FloatBase<T>::operator!=(const FloatBase<T>& other)const
 {
 	return !(*this == other);
 }
-template <typename T>
+template <class T>
 bool FloatBase<T>::operator>(const FloatBase<T>& other)const
 {
 	if (this->_precision == other._precision)
@@ -223,7 +308,7 @@ bool FloatBase<T>::operator>(const FloatBase<T>& other)const
 		return this->_int > other._int.movecells(this->_precision - other._precision);
 	return this->_int.movecells(other._precision - this->_precision) > other._int;
 }
-template <typename T>
+template <class T>
 bool FloatBase<T>::operator<(const FloatBase<T>& other)const
 {
 	if (this->_precision == other._precision)
@@ -232,7 +317,7 @@ bool FloatBase<T>::operator<(const FloatBase<T>& other)const
 		return this->_int < other._int.movecells(this->_precision - other._precision);
 	return this->_int.movecells(other._precision - this->_precision) < other._int;
 }
-template <typename T>
+template <class T>
 bool FloatBase<T>::operator>=(const FloatBase<T>& other)const
 {
 	if (this->_precision == other._precision)
@@ -241,7 +326,7 @@ bool FloatBase<T>::operator>=(const FloatBase<T>& other)const
 		return this->_int >= other._int.movecells(this->_precision - other._precision);
 	return this->_int.movecells(other._precision - this->_precision) >= other._int;
 }
-template <typename T>
+template <class T>
 bool FloatBase<T>::operator<=(const FloatBase<T>& other)const
 {
 	if (this->_precision == other._precision)
@@ -252,7 +337,7 @@ bool FloatBase<T>::operator<=(const FloatBase<T>& other)const
 }
 
 
-template <typename T>
+template <class T>
 FloatBase<T>& FloatBase<T>::operator=(const FloatBase<T>& other)
 {
 	this->_int = other._int;
@@ -260,21 +345,21 @@ FloatBase<T>& FloatBase<T>::operator=(const FloatBase<T>& other)
 	return *this;
 }
 
-template <typename T>
+template <class T>
 FloatBase<T>& FloatBase<T>::operator+=(const T& other)
 {
 	this->_int += other.movecells(this->_precision);
 	return *this;
 }
 
-template <typename T>
+template <class T>
 FloatBase<T>& FloatBase<T>::operator-=(const T& other)
 {
 	this->_int -= other.movecells(this->_precision);
 	return *this;
 }
 
-template <typename T>
+template <class T>
 FloatBase<T>& FloatBase<T>::operator+=(const FloatBase<T>& other)
 {
 	if (this->_precision == other._precision)
@@ -292,7 +377,7 @@ FloatBase<T>& FloatBase<T>::operator+=(const FloatBase<T>& other)
 	this->_precision = (this->_precision >= other._precision) ? other._precision : this->_precision;
 	return *this;
 }
-template <typename T>
+template <class T>
 FloatBase<T>& FloatBase<T>::operator-=(const FloatBase<T>& other)
 {
 	if (this->_precision == other._precision)
@@ -310,7 +395,7 @@ FloatBase<T>& FloatBase<T>::operator-=(const FloatBase<T>& other)
 	this->_precision = (this->_precision >= other._precision) ? other._precision : this->_precision;
 	return *this;
 }
-template <typename T>
+template <class T>
 FloatBase<T>& FloatBase<T>::operator*=(const FloatBase<T>& other)
 {
 	if (this->_precision >= other._precision)
@@ -325,33 +410,33 @@ FloatBase<T>& FloatBase<T>::operator*=(const FloatBase<T>& other)
 	return *this;
 }
 
-template <typename T>
+template <class T>
 FloatBase<T>& FloatBase<T>::operator*=(const T& other)
 {
 	this->_int *= other;
 	return *this;
 }
 
-template <typename T>
+template <class T>
 FloatBase<T> operator*(const uint32_t& value, const FloatBase<T>& other)
 {
 	return other * value;
 }
 
-template <typename T>
+template <class T>
 FloatBase<T>& FloatBase<T>::operator/=(const FloatBase<T>& other)
 {
 	this->_int = this->_int.movecells(other._precision) / other._int;
 	return *this;
 }
-template <typename T>
+template <class T>
 FloatBase<T>& FloatBase<T>::operator/=(const T& other)
 {
 	this->_int /= other;
 	return *this;
 }
 
-template <typename T>
+template <class T>
 FloatBase<T> sqrt(const FloatBase<T>& value)
 {
 	FloatBase<T> prev = 0;
@@ -363,7 +448,7 @@ FloatBase<T> sqrt(const FloatBase<T>& value)
 	}
 	return res;
 }
-template <typename T>
+template <class T>
 FloatBase<T> pow(const FloatBase<T>& other, const uint32_t& n)
 {
 	FloatBase<T> result = 1;
@@ -378,7 +463,7 @@ FloatBase<T> pow(const FloatBase<T>& other, const uint32_t& n)
 	}
 	return result;
 }
-template <typename T>
+template <class T>
 FloatBase<T>::operator float() const
 {
 	FloatBase<T> buffer = abs(*this);
@@ -430,7 +515,7 @@ FloatBase<T>::operator float() const
 	return *(float*)&r;
 }
 
-template <typename T>
+template <class T>
 FloatBase<T>::operator double() const
 {
 	FloatBase<T> buffer = abs(*this);
@@ -482,4 +567,61 @@ FloatBase<T>::operator double() const
 	return *(double*)&r;
 }
 
+/*
+template<class T>
+template<typename Int>
+inline FloatBase<T>& FloatBase<T>::operator*=(const Int& other)
+{
+	return (*this *= T(other));
+}
+
+template<class T>
+template<typename Int>
+inline FloatBase<T> FloatBase<T>::operator*(const Int& other)
+{
+	return (*this * T(other));
+}
+
+template<class T>
+template<typename Int>
+inline FloatBase<T> FloatBase<T>::operator+(const Int& other)
+{
+	return (*this + T(other));
+}
+
+template<class T>
+template<typename Int>
+inline FloatBase<T> FloatBase<T>::operator-(const Int& other)
+{
+	return (*this - T(other));
+}
+
+template<class T>
+template<typename Int>
+inline FloatBase<T> FloatBase<T>::operator/(const Int& other)
+{
+	return (*this / T(other));
+}
+
+template<class T>
+template<typename Int>
+inline FloatBase<T>& FloatBase<T>::operator+=(const Int& other)
+{
+	return (*this += T(other));
+}
+
+template<class T>
+template<typename Int>
+inline FloatBase<T>& FloatBase<T>::operator-=(const Int& other)
+{
+	return (*this -= T(other));
+}
+
+template<class T>
+template<typename Int>
+inline FloatBase<T>& FloatBase<T>::operator/=(const Int& other)
+{
+	return (*this /= T(other));
+}
+*/
 #endif // !FLOAT_BASE_H

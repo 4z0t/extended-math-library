@@ -1,9 +1,9 @@
 #include "BinInt.h"
 
 
-char bin_int_length(uint32_t num)
+u32 BinInt::bin_int_length(uint32_t num)
 {
-	char i = 0;
+	u32 i = 0;
 	while (num) {
 		num >>= 1; i++;
 	}
@@ -149,7 +149,7 @@ BinInt::BinInt(const int32_t& value) :BinInt(1, false)
 	this->_num[0] = abs(value);
 
 }
-BinInt::BinInt(const u32& value) :BinInt(1, false)
+BinInt::BinInt(const uint32_t& value) :BinInt(1, false)
 {
 
 	this->_len = 1;

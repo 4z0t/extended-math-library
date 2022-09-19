@@ -245,8 +245,21 @@ int main()
 
 	//compare_speed();
 
-	FloatBase<DecInt> u = DecInt(3);
-	FloatBase<DecInt> t = DecInt(4);
+	DecFloat u = DecInt(3);
+	DecFloat t = DecInt(4);
 	u + t;
+	u = u / DecInt(67);
+	std::cout << u << std::endl;;
+
+
+	BinFloat bu = BinInt(0x2374);
+	BinFloat bt = BinInt(0x2374);
+	bu + bt;
+
+	bu = bu * 0x43657655u / BinInt(5);
+
+	std::cout << bu;
+
+
 }
 

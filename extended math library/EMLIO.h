@@ -33,7 +33,7 @@ std::ostream& operator<<(std::ostream& os, const DecInt& value)
 		os << '-';
 	for (uint32_t i = value._len - 1; ; i--)
 	{
-		for (int j = 0; j < 9 - DecInt::dec_int_length(value._num[i]) && !zeros; j++)
+		for (u32 j = 0; j < 9 - DecInt::dec_int_length(value._num[i]) && !zeros; j++)
 			os << 0;
 		if (value._num[i] != 0 || (i == 0 && zeros))
 			os << value._num[i];
@@ -48,7 +48,7 @@ std::ostream& operator<<(std::ostream& os, const FloatBase<DecInt>& value)
 {
 	if (value._precision >= value._int._len)
 	{
-		uint32_t zero_counter = (value._precision - value._int.len);
+		uint32_t zero_counter = (value._precision - value._int._len);
 		if (value._int._sign)
 			os << '-';
 		os << "0.";
@@ -74,9 +74,9 @@ std::ostream& operator<<(std::ostream& os, const FloatBase<DecInt>& value)
 		bool zeros = true;
 		if (value._int._sign)
 			os << '-';
-		for (uint32_t i = value._int.len - 1; i >= value.precision; i--)
+		for (uint32_t i = value._int._len - 1; i >= value._precision; i--)
 		{
-			for (uint32_t j = 0; j < 9 - length_int(value._int._num[i]) && !zeros; j++)
+			for (uint32_t j = 0; j < 9 - DecInt::dec_int_length(value._int._num[i]) && !zeros; j++)
 				os << 0;
 			if (value._int._num[i] != 0 || (i == 0 && zeros))
 				os << value._int._num[i];
@@ -84,7 +84,7 @@ std::ostream& operator<<(std::ostream& os, const FloatBase<DecInt>& value)
 		}
 		uint32_t zero_counter = 0;
 		os << '.';
-		for (int i = value.precision - 1; i >= 0; i--)
+		for (int i = value._precision - 1; i >= 0; i--)
 		{
 			if (value._int._num[i] == 0)
 				zero_counter++;
@@ -92,7 +92,7 @@ std::ostream& operator<<(std::ostream& os, const FloatBase<DecInt>& value)
 			{
 				for (uint32_t zeros = 0; zeros < zero_counter * 9; zeros++)
 					os << 0;
-				for (uint32_t j = 0; j < 9 - length_int(value._int._num[i]); j++)
+				for (uint32_t j = 0; j < 9 - DecInt::dec_int_length(value._int._num[i]); j++)
 					os << 0;
 				if (value._int._num[i] != 0)
 					os << value._int._num[i];
@@ -123,9 +123,79 @@ std::ostream& operator<<(std::ostream& os, const BinInt& value)
 		os << value._num[i] << '.';
 		if (i == 0)break;
 	}
-	os << std::dec << std::endl;
+	os << std::dec;
 	return os;
 }
+
+#ifdef FLOAT_BASE_H
+
+std::ostream& operator<<(std::ostream& os, const FloatBase<BinInt>& value)
+{
+	os << std::hex;
+	if (value._int._sign)
+		os << '-';
+	if (value._int.zero())
+		return os << "0.";
+
+
+	if (value._precision >= value._int._len)
+	{
+		u32 zero_counter = value._precision - value._int._len;
+
+		os << "0.";
+		for (u32 i = 0; i < zero_counter; i++)
+		{
+			os << "00000000'";
+		}
+		for (uint32_t i = value._int._len - 1; ; i--)
+		{
+
+			os.fill('0');
+			os.width(8);
+			os << value._int._num[i] << '\'';
+			if (i == 0)break;
+			os << std::dec;
+		}
+	}
+	else
+	{
+		for (uint32_t i = value._int._len - 1;; i--)
+		{
+			os.fill('0');
+			os.width(8);
+			os << value._int._num[i];
+			if (i <= value._precision)
+				break;
+			os << '\'';
+
+
+		}
+		os << '.';
+		u32 zero_count = 0;
+
+		for (u32 i = value._precision - 1; ; i--)
+		{
+			if (value._int._num[i] == 0)
+			{
+				zero_count++;
+
+			}
+			else
+			{
+				for (u32 j = 0; j < zero_count; j++)
+				{
+					os << "00000000'";
+				}
+				os.fill('0');
+				os.width(8);
+				os << value._int._num[i] << '\'';
+			}
+			if (i == 0)break;
+		}
+	}
+	return os;
+}
+#endif // FLOAT_BASE_H
 
 #endif //BININT_H
 

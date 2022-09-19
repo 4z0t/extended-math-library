@@ -50,7 +50,7 @@ public:
 	DecInt  move10(const u32& times) const;
 	DecInt& movethis10(const u32& times);
 	static constexpr u32 milrd = 1'000'000'000;
-	static int dec_int_length(const u32& num);
+	static u32 dec_int_length(const u32& num);
 
 	DecInt() : IntBase() {}
 	DecInt(const DecInt& other) : IntBase(other) {}
@@ -91,12 +91,19 @@ public:
 
 #if _HAS_CXX17 
 	DecInt(DecInt&& other) noexcept :IntBase(std::move(other)) {};
-	inline DecInt& operator=(DecInt&& other) noexcept{ IntBase::operator=(std::move(other)); return *this; };
+	inline DecInt& operator=(DecInt&& other) noexcept { IntBase::operator=(std::move(other)); return *this; };
+#endif
+#ifdef FLOAT_BASE_H
+	friend class FloatBase< DecInt>;
+#ifdef _IOSTREAM_
+	friend std::ostream& operator<<(std::ostream& os, const FloatBase<DecInt>& value);
+#endif
 #endif
 
 #ifdef _IOSTREAM_
 	void print(bool sep)const;
 	friend std::ostream& operator<<(std::ostream& os, const DecInt& value);
+
 #endif
 
 #ifdef _INITIALIZER_LIST_
@@ -106,5 +113,8 @@ public:
 	friend class IntBase<DecInt>;
 };
 
-#endif
 
+#ifdef FLOAT_BASE_H
+typedef FloatBase< DecInt> DecFloat;
+#endif
+#endif

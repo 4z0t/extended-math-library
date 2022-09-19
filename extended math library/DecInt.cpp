@@ -11,10 +11,10 @@ inline int64_t DecInt::distance(const DecInt& other) const
 }
 
 
-int DecInt::dec_int_length(const u32& num)
+u32 DecInt::dec_int_length(const u32& num)
 {
 	u32 a = num;
-	int length = 0;
+	u32 length = 0;
 	while (a)
 	{
 		a /= 10;

@@ -92,9 +92,6 @@ public:
 	IntBase(const IntBase& other);
 #ifdef FLOAT_BASE_H
 	friend class FloatBase<IntBase>;
-#ifdef _IOSTREAM_
-	friend std::ostream& operator<<(std::ostream& os, const FloatBase<IntBase>& value);
-#endif
 #endif // FLOAT_BASE_H
 
 
