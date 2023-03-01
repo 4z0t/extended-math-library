@@ -51,7 +51,7 @@ protected:
 
 	virtual int64_t distance()const = 0;
 	virtual int64_t distance(const T&)const = 0;
-	IntBase(const u32& capacity, bool sign);
+	IntBase(u32 capacity, bool sign);
 
 
 
@@ -322,7 +322,7 @@ IntBase<T>::IntBase()
 }
 
 template<typename T>
-IntBase<T>::IntBase(const u32& capacity, bool sign)
+IntBase<T>::IntBase(u32 capacity, bool sign)
 {
 	this->_sign = sign;
 	this->_len = capacity;

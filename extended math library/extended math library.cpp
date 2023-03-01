@@ -301,9 +301,35 @@ DecInt FastModPow(const DecInt& v, size_t n, size_t mod)
 }
 
 
-int main()
-{
 
+DecInt Sqrt(const DecInt& v)
+{
+	DecInt prev_prev{ 0 };
+	DecInt prev{ 0u };
+	DecInt res{ 1u };
+
+	while (prev != res && prev_prev != res)
+	{
+		prev_prev = prev;
+		prev = res;
+		res = (res + v / res) / 2u;
+	}
+	return res;
+}
+
+bool IsPrime(const DecInt& v)
+{
+	DecInt s = Sqrt(v) + 1;
+	for (DecInt i = 2; i <= s; i++)
+	{
+		if ((v % i).zero())return false;
+	}
+	return true;
+}
+
+
+void ModSpeedTest()
+{
 	DecInt c = { 1,1,1,1,1,1,1,1,1,1 };
 	Timer t;
 	DecInt m1 = NativeModPow(c, 6111579ul, 9173503ul);
@@ -315,7 +341,35 @@ int main()
 	std::cout << m1 << std::endl << m2 << std::endl;
 	std::cout << t1 << std::endl << t2;
 
+}
 
+
+void TestSqrt()
+{
+	DecInt v = 256;
+	DecInt s = Sqrt(v);
+
+	std::cout << s << std::endl;
+}
+
+
+void TestIsPrime()
+{
+	bool a;
+	for (DecInt i = 2; i < DecInt{ 100000 }; i++)
+	{
+		a = IsPrime(i);
+	}
+}
+
+int main()
+{
+
+
+	Timer t;
+
+	TestIsPrime();
+	std::cout << t.elapsed() << std::endl;
 
 
 }
