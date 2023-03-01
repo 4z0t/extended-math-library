@@ -251,10 +251,72 @@ void compare_speed()
 	std::cout << d << std::endl;
 }
 
+
+
+DecInt NativeModPow(const DecInt& v, size_t n, size_t mod)
+{
+	DecInt result = 1;
+	DecInt buffer = v;
+
+	DecInt dmod = mod;
+
+	for (size_t i = 0; i < sizeof(n) * 8 && (1ull << i) <= n; i++)
+	{
+		//std::cout << i << std::endl;
+		if (n & (1ull << i))
+		{
+			result *= buffer;
+			result = result % dmod;
+		}
+		if ((1ull << i) < n)
+		{
+			buffer *= buffer;
+			buffer = buffer % dmod;
+		}
+	}
+	return result;
+}
+
+DecInt FastModPow(const DecInt& v, size_t n, size_t mod)
+{
+	DecInt result = 1;
+	DecInt buffer = v;
+	n %= mod - 1;
+	DecInt dmod = mod;
+	for (size_t i = 0; i < sizeof(n) * 8 && (1ull << i) <= n; i++)
+	{
+		//std::cout << i << std::endl;
+		if (n & (1ull << i))
+		{
+			result *= buffer;
+			result = result % dmod;
+		}
+		if ((1ull << i) < n)
+		{
+			buffer *= buffer;
+			buffer = buffer % dmod;
+		}
+	}
+	return result;
+}
+
+
 int main()
 {
 
-	//compare_speed();
-	inc_test();
+	DecInt c = { 1,1,1,1,1,1,1,1,1,1 };
+	Timer t;
+	DecInt m1 = NativeModPow(c, 6111579ul, 9173503ul);
+	auto t1 = t.elapsed();
+	t.reset();
+	DecInt m2 = FastModPow(c, 6111579ul, 9173503ul);
+	auto t2 = t.elapsed();
+
+	std::cout << m1 << std::endl << m2 << std::endl;
+	std::cout << t1 << std::endl << t2;
+
+
+
+
 }
 

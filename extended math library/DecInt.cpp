@@ -61,11 +61,20 @@ DecInt::DecInt(const u32& value) :DecInt(2, false)
 		this->_num[0] = value;
 	}
 }
-DecInt::DecInt(const int64_t& value)
+DecInt::DecInt(const int64_t& value) :DecInt(3, false)
 {
+	this->_sign = (value < 0);
+	this->_num[0] = value % milrd;
+	this->_num[1] = (value / milrd) % milrd;
+	this->_num[1] = value / milrd / milrd;
+	this->cut_zeros();
 }
-DecInt::DecInt(const uint64_t& value)
+DecInt::DecInt(const uint64_t& value) :DecInt(3, false)
 {
+	this->_num[0] = value % milrd;
+	this->_num[1] = (value / milrd) % milrd;
+	this->_num[1] = value / milrd / milrd;
+	this->cut_zeros();
 }
 DecInt  DecInt::abs_sum(const DecInt& other) const
 {
